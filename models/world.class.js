@@ -28,14 +28,14 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);// reinigt immer wieder das canvas das sich die modele nicht immer auf der anfangsbosition sind
 
         this.addObjectsToMap(this.backgroundObjects)  //für alle Landschafften
-        this.addObjectsToMap(this.clouds)   //für alle Wolken 
         this.addToMap(this.character) // für den charactar (PEPE)
+        this.addObjectsToMap(this.clouds)   //für alle Wolken 
         this.addObjectsToMap(this.enimies)  //für alle Chicken 
         
         
         // Draw() wird immer wieder aufgerufen 
         let self = this;
-        requestAnimationFrame(function(){
+        requestAnimationFrame(function() {
             self.draw();
         });
 
