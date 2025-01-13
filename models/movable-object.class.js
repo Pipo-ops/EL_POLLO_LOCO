@@ -1,4 +1,4 @@
-class MovableObject {
+class MovableObject { 
    x= 120; // x achse = rechts Links
    y= 160; // y-achse = oben unten
    img;
@@ -7,6 +7,7 @@ class MovableObject {
    imageCache = {};
    currentImage = 0;
    speed = 0.15;
+   otherDirection = false;
 
 
    loadImage(path){
@@ -18,7 +19,7 @@ class MovableObject {
    * 
    * @param {Array} arr - ['img/imge1.png', 'img/imge2.png', ......]
    */
-   loadImages(arr) {
+   loadImages(arr) { // is für das durladen der bilder verantwordlich
       arr.forEach((path) => {
          let img = new Image();
          img.src = path;
@@ -26,11 +27,11 @@ class MovableObject {
       });   
    }
 
-   moveRight() {
+   moveRight() { // ist die funktion die für alle beweglichen elemente nach Rechts verandwortlich ist 
       console.log('Moving right');
    }
 
-   moveLeft(){
+   moveLeft(){ // ist die funktion die für alle beweglichen elemente nach links verandwortlich ist 
       setInterval( () =>{
          this.x -= this.speed;
       },1000 / 60);
