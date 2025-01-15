@@ -7,7 +7,7 @@ class Cloud extends MovableObject {
     constructor(){ // ist in jeder class zu finden 
         super().loadImage('img/5_background/layers/4_clouds/1.png')
 
-        this.x = Math.random() * 500;  // is die Rechnung das es immer an anderen orden auftaucht beim aktuialiesieren
+        this.x = Math.random() * 2200;  // is die Rechnung das es immer an anderen orden auftaucht beim aktuialiesieren
         this.y = Math.random() * 50;
         this.speed = 0.03 + Math.random() * 0.2;
         this.animate();

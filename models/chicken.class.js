@@ -14,7 +14,7 @@ class Chicken extends MovableObject {
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png')
         this.loadImages(this.IMAGES_WALKING);
 
-        this.x = 200 + Math.random() * 500; // zufälliges erscheinen zwischen 200 und 700 bei jedem neuen Laden
+        this.x = 200 + Math.random() * 1900; // zufälliges erscheinen zwischen 200 und 700 bei jedem neuen Laden
         this.speed = 0.15 + Math.random() * 0.5; // hir wird die geschwindichkeit berechnet 
 
         this.animate();
@@ -24,10 +24,7 @@ class Chicken extends MovableObject {
         this.moveLeft(); // ist die function das sich die chicken nach links bewegen so wie die Wolken 
 
         setInterval(() => {
-            let i = this.currentImage % this. IMAGES_WALKING.length; // let i = 0 % 6;
-            let path = this.IMAGES_WALKING[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
+            this.playAnimation(this.IMAGES_WALKING);
         },150); // is die zeit der Animation
     }
 }

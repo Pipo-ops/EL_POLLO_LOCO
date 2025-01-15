@@ -25,17 +25,18 @@ class World {
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);// reinigt immer wieder das canvas das sich die modele nicht immer auf der anfangsbosition sind
 
-        this.ctx.translate(this.camara_x, 0)    //verschiebt die variable immer um das 1 (x) , 2(y) 
+        this.ctx.translate(this.camara_x, 0);    //verschiebt die variable immer um das 1 (x) , 2(y) 
 
         this.sun[0].x = -this.camara_x + 570; // verschiebt die sonne mit 
 
-        this.addObjectsToMap(this.level.backgroundObjects)  //für alle Landschafften              // level // erklärung is jetzt da daher wir wie ganz oben level = level1; gemacht haben und die variablen aus level1.js ziehn
-        this.addObjectsToMap(this.sun)  // für die Sun
-        this.addToMap(this.character) // für den charactar (PEPE)
-        this.addObjectsToMap(this.level.clouds)   //für alle Wolken 
-        this.addObjectsToMap(this.level.enimies)  //für alle Chicken 
+        this.addObjectsToMap(this.level.backgroundObjects);  //für alle Landschafften              // level // erklärung is jetzt da daher wir wie ganz oben level = level1; gemacht haben und die variablen aus level1.js ziehn
+        this.addObjectsToMap(this.sun);  // für die Sun
+        this.addToMap(this.character); // für den charactar (PEPE)
+        this.addObjectsToMap(this.level.clouds);   //für alle Wolken 
+        this.addObjectsToMap(this.level.enimies);  //für alle Chicken 
+        this.addObjectsToMap(this.level.coins);  //für alle Coin 
 
-        this.ctx.translate(-this.camara_x, 0) //verschiebt die variable wieder zurück 
+        this.ctx.translate(-this.camara_x, 0); //verschiebt die variable wieder zurück 
         
         // Draw() wird immer wieder aufgerufen damit es wieder oben von neu zu (malen-drow) beginnt
         let self = this;

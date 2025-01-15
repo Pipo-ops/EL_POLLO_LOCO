@@ -27,6 +27,15 @@ class MovableObject {
       });   
    }
 
+   playAnimation(images) {
+      if (images && images.length > 0) { // Überprüfen, ob das Array gültig ist
+          let i = this.currentImage % images.length; // Verwende das übergebene Array
+          let path = images[i];
+          this.img = this.imageCache[path];
+          this.currentImage++;
+      }
+  }
+
    moveRight() { // ist die funktion die für alle beweglichen elemente nach Rechts verandwortlich ist 
       console.log('Moving right');
    }
