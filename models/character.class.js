@@ -1,8 +1,21 @@
 class Character extends MovableObject {
+    y= 99; // y-achse = oben unten
 
     height = 270;
     width = 150;
     speed = 8;
+
+    IMAGES_JUMPING = [
+        'img/2_character_pepe/3_jump/J-31.png',
+        'img/2_character_pepe/3_jump/J-32.png',
+        'img/2_character_pepe/3_jump/J-33.png',
+        'img/2_character_pepe/3_jump/J-34.png',
+        'img/2_character_pepe/3_jump/J-35.png',
+        'img/2_character_pepe/3_jump/J-36.png',
+        'img/2_character_pepe/3_jump/J-37.png',
+        'img/2_character_pepe/3_jump/J-38.png',
+        'img/2_character_pepe/3_jump/J-39.png'
+    ]
 
     IMAGES_WALKING = [ // sind die bilder die hintereinander abgespielt werden 
         'img/2_character_pepe/2_walk/W-21.png',
@@ -18,6 +31,8 @@ class Character extends MovableObject {
     constructor(){ // ist in jeder class zu finden 
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
         this.loadImages(this.IMAGES_WALKING);
+        this.loadImages(this.IMAGES_JUMPING);
+        this.applyGravity();
 
         this.animate();
     }
@@ -28,30 +43,43 @@ class Character extends MovableObject {
 
             this.walking_sound.pause()
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x){ //function für das nach rechts gehn             //&& this.x < this.world.level.level_end_x // bedeudung das er nicht weiter kann als die variable level_end_x in level
-                this.x += this.speed;
+                this.moveRight();
                 this.otherDirection = false; 
                 this.walking_sound.play(); // sound beim gehn
             }
 
             if (this.world.keyboard.LEFT && this.x > 0){ //function für das nach links gehn         // && this.x > 0 // bedeudung das er nicht weiter geht als die ix achs nach links is daher sie bei null beginnt
-                this.x -= this.speed;
+                this.moveLeft();
                 this.otherDirection = true;
                 this.walking_sound.play();
             }
+
+            if (this.world.keyboard.SPACE) {
+                this.jump();
+            }
+
             this.world.camara_x = -this.x + 100; // is das sich die camera beim bewegen mit bewegt    //+ 100// bedeudung das die kammera werter rechts beginnt
+
         }, 1000 / 60);
 
         setInterval(() => {
 
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) { // bewirkt das er die darunter ausgefürten sachen nur bei Rechts und Links dücken ausführt //
-                
-                // Walk Animation
-                this.playAnimation(this.IMAGES_WALKING);
+            if(this.isAboveGround()) {
+                this.playAnimation(this.IMAGES_JUMPING);
+            } else {
+                if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+                    this.playAnimation(this.IMAGES_WALKING);
+                } else {
+                    this.img = this.imageCache['img/2_character_pepe/2_walk/W-21.png']; // Setze Standardbild
+                }
             }
-        },60); // is die zeit der Animation
+        },50); // is die zeit der Animation
+
     }
    
-    jump(){
-
+    jump() {
+        if (!this.isAboveGround()) { // Nur springen, wenn der Charakter am Boden ist
+            this.speedY = 30; // Setzt die Sprunggeschwindigkeit nach oben
+        }
     }
 }

@@ -1,6 +1,5 @@
 class MovableObject { 
    x= 120; // x achse = rechts Links
-   y= 160; // y-achse = oben unten
    img;
    height = 150;
    width = 100;
@@ -8,7 +7,23 @@ class MovableObject {
    currentImage = 0;
    speed = 0.15;
    otherDirection = false;
+   speedY = 0;
+   acceleration = 2.5;
 
+   applyGravity() {
+      setInterval(() => {
+          if (this.isAboveGround() || this.speedY > 0) { // Wenn in der Luft oder nach oben springend
+              this.y -= this.speedY; // Bewege nach oben oder unten
+              this.speedY -= this.acceleration; // Verlangsame die vertikale Geschwindigkeit durch Gravitation
+          } else {
+              this.speedY = 0; // Stoppe die Bewegung, wenn der Boden erreicht ist
+          }
+      }, 1000 / 25);
+   }
+
+   isAboveGround() {
+      return this.y <  151  ;     // Ist über dem Boden, wenn y kleiner als 160 ist
+   }
 
    loadImage(path){
       this.img = new Image(); // this.img = document.getElementById('image')  <img id="image" src> 
@@ -37,12 +52,12 @@ class MovableObject {
   }
 
    moveRight() { // ist die funktion die für alle beweglichen elemente nach Rechts verandwortlich ist 
-      console.log('Moving right');
+      this.x += this.speed;
    }
 
    moveLeft(){ // ist die funktion die für alle beweglichen elemente nach links verandwortlich ist 
+      this.x -= this.speed;
       setInterval( () =>{
-         this.x -= this.speed;
       },1000 / 60);
    }
 }

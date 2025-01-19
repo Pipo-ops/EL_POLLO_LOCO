@@ -1,5 +1,5 @@
 class Chicken extends MovableObject {
-    y = 353;
+    y = 345;
 
     height = 70;
     width = 60;
@@ -9,6 +9,7 @@ class Chicken extends MovableObject {
         'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
         'img/3_enemies_chicken/chicken_normal/1_walk/3_w.png'
     ]
+    chicken_sound = new Audio('audio/chicken/766255__edenfallen__anmlfarm-ext_chickensclucking_siyabonga_ngobese_owsfx.wav');
 
     constructor(){ // ist in jeder class zu finden 
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png')
@@ -21,10 +22,14 @@ class Chicken extends MovableObject {
     }
 
     animate(){ // Diese function fürt die animation aus 
-        this.moveLeft(); // ist die function das sich die chicken nach links bewegen so wie die Wolken 
-
+         
+        setInterval(() => {
+            this.moveLeft(); // ist die function das sich die chicken nach links bewegen so wie die Wolken
+        }, 1000 / 60); // is die zeit der Animation
+        
         setInterval(() => {
             this.playAnimation(this.IMAGES_WALKING);
+            
         },150); // is die zeit der Animation
     }
 }
