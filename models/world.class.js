@@ -16,10 +16,21 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
+        this.checkCollisions();
     }
 
     setWorld(){  // das der character und keyboard functionieren er is mit der world verbunden
         this.character.world = this;
+    }
+
+    checkCollisions() {
+        setInterval(() =>{
+            this.level.enimies.forEach( (enemy) =>{
+                if (this.character.isColliding(enemy) ) {
+                    this.character.hit();
+                }
+            });
+        }, 200); // milli Sek.
     }
 
     draw(){
