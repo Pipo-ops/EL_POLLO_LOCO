@@ -8,6 +8,7 @@ class World {
     ctx;
     keyboard;
     camara_x = 0;
+    statusBar = new StatusBar();
 
     constructor(canvas, keyboard){          // diese funktion is in jeder class diese enthält alerdings die this.ctx = canvas.getContext('2d'); die is für das canvas verantwordlich
         this.canvas = canvas;
@@ -28,6 +29,7 @@ class World {
             this.level.enimies.forEach( (enemy) =>{
                 if (this.character.isColliding(enemy) ) {
                     this.character.hit();
+                    this.statusBar.setPercentage(this.character.energy);
                 }
             });
         }, 200); // milli Sek.
@@ -47,6 +49,10 @@ class World {
         this.addObjectsToMap(this.level.enimies);  //für alle Chicken 
         this.addObjectsToMap(this.level.coins);  //für alle Coin 
 
+        this.ctx.translate(-this.camara_x, 0);
+        this.addToMap(this.statusBar); // für statusbar
+        this.ctx.translate(this.camara_x, 0); 
+
         this.ctx.translate(-this.camara_x, 0); //verschiebt die variable wieder zurück 
         
         // Draw() wird immer wieder aufgerufen damit es wieder oben von neu zu (malen-drow) beginnt
@@ -55,12 +61,6 @@ class World {
             self.draw();
         });
 
-    }
-
-    addObjectsToMap(objects){
-        objects.forEach(o => {
-            this.addToMap(o);
-        });
     }
 
     addToMap(mo) { // vereinfachte funktion für MovebleObjekt
@@ -75,6 +75,12 @@ class World {
         if (mo.otherDirection) {  // diese fuction is dafür da um das bild wieder zu endspiegeln
             this.flipImageBack(mo);
         }
+    }
+
+    addObjectsToMap(objects){
+        objects.forEach(o => {
+            this.addToMap(o);
+        });
     }
 
     flipImage(mo){
