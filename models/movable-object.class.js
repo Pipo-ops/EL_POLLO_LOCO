@@ -1,4 +1,4 @@
-class MovableObject { 
+class MovableObject extends DrawableObject { 
    x= 120; // x achse = rechts Links
    img;
    height = 150;
