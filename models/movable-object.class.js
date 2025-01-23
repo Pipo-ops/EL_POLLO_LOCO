@@ -23,12 +23,21 @@ class MovableObject extends DrawableObject {
 
    isColliding(mo) {
       return this.x + this.width - 20 > mo.x &&
-            this.y + this.height  > mo.y &&
+            this.y + this.height > mo.y &&
             this.x < mo.x &&
             this.y < mo.y + mo.height;
    }
 
    hit() {
+      this.energy  -= 20;
+      if(this.energy < 0) {
+         this.energy = 0;
+      } else {
+         this.lastHit = new Date().getTime();
+      }
+   }
+
+   hitCoin() {
       this.energy  -= 20;
       if(this.energy < 0) {
          this.energy = 0;

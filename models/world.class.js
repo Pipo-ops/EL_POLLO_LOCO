@@ -8,7 +8,9 @@ class World {
     ctx;
     keyboard;
     camara_x = 0;
-    statusBar = new StatusBar();
+    statusBar = new StatusBarHealth();
+    statusBarBottle = new StatusBarBottle();
+    statusBarCoin = new StatusBarCoin();
 
     constructor(canvas, keyboard){          // diese funktion is in jeder class diese enthält alerdings die this.ctx = canvas.getContext('2d'); die is für das canvas verantwordlich
         this.canvas = canvas;
@@ -35,6 +37,17 @@ class World {
         }, 200); // milli Sek.
     }
 
+    checkCollisionsCoin() {
+        setInterval(() =>{
+            this.level.enimies.forEach( (coin) =>{
+                if (this.character.isColliding(coin) ) {
+                    this.character.hitCoin();
+                    this.statusBarCoin.setPercentage(this.character.energy);
+                }
+            });
+        }, 200); // milli Sek.
+    }
+
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);// reinigt immer wieder das canvas das sich die modele nicht immer auf der anfangsbosition sind
 
@@ -51,6 +64,8 @@ class World {
 
         this.ctx.translate(-this.camara_x, 0);
         this.addToMap(this.statusBar); // für statusbar
+        this.addToMap(this.statusBarBottle); 
+        this.addToMap(this.statusBarCoin); 
         this.ctx.translate(this.camara_x, 0); 
 
         this.ctx.translate(-this.camara_x, 0); //verschiebt die variable wieder zurück 
