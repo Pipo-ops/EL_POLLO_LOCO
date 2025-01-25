@@ -8,17 +8,28 @@ class MovableObject extends DrawableObject {
 
    applyGravity() {
       setInterval(() => {
-          if (this.isAboveGround() || this.speedY > 0) { // Wenn in der Luft oder nach oben springend
-              this.y -= this.speedY; // Bewege nach oben oder unten
-              this.speedY -= this.acceleration; // Verlangsame die vertikale Geschwindigkeit durch Gravitation
+          if (this.isDead()) {
+              // Langsames Fallen, wenn der Charakter tot ist
+              this.speedY += this.acceleration * 0.2; // Beschleunigung reduzieren
+              this.y += this.speedY; // Bewege den Charakter nach unten
           } else {
-              this.speedY = 0; // Stoppe die Bewegung, wenn der Boden erreicht ist
+              // Normale Gravitation, wenn der Charakter noch lebt
+              if (this.isAboveGround() || this.speedY > 0) {
+                  this.y -= this.speedY; // Bewege nach oben oder unten
+                  this.speedY -= this.acceleration; // Verlangsame die vertikale Geschwindigkeit durch Gravitation
+              } else {
+                  this.speedY = 0; // Stoppe die Bewegung, wenn der Boden erreicht ist
+              }
           }
-      }, 1000 / 25);
-   }
+      }, 1000 / 25); // 25 FPS
+  }
 
    isAboveGround() {
-      return this.y <  151  ;     // Ist über dem Boden, wenn y kleiner als 160 ist
+      if(this instanceof ThrowableObject) {
+         return true;
+      } else {
+         return this.y <  151  ;     // Ist über dem Boden, wenn y kleiner als 160 ist
+      }
    }
 
    isColliding(mo) {
@@ -29,21 +40,28 @@ class MovableObject extends DrawableObject {
    }
 
    hit() {
-      this.energy  -= 20;
-      if(this.energy < 0) {
-         this.energy = 0;
-      } else {
-         this.lastHit = new Date().getTime();
+      if (this.isInvincible) {
+          return; // Charakter ist unverwundbar und kann keinen Schaden nehmen
       }
-   }
+
+      this.energy -= 20; // Energie verringern
+      if (this.energy < 0) {
+          this.energy = 0; // Energie nicht unter 0
+      } else {
+          this.lastHit = new Date().getTime(); // Zeit des letzten Treffers speichern
+          this.makeInvincible(); // Unverwundbarkeit aktivieren
+      }
+  }
+
+  makeInvincible() {
+   this.isInvincible = true; // Unverwundbar machen
+   setTimeout(() => {
+       this.isInvincible = false; // Nach 2 Sekunden wieder verwundbar
+   }, 1000); // 1000 ms = 1 Sekunden
+}
 
    hitCoin() {
-      this.energy  -= 20;
-      if(this.energy < 0) {
-         this.energy = 0;
-      } else {
-         this.lastHit = new Date().getTime();
-      }
+      this.lastHit = new Date().getTime();
    }
 
    isHurt(){

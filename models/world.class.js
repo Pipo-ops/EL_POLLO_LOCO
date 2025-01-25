@@ -11,6 +11,8 @@ class World {
     statusBar = new StatusBarHealth();
     statusBarBottle = new StatusBarBottle();
     statusBarCoin = new StatusBarCoin();
+    totalCoins = this.level.coins.length;
+    throwableObjects = [];
 
     constructor(canvas, keyboard){          // diese funktion is in jeder class diese enthält alerdings die this.ctx = canvas.getContext('2d'); die is für das canvas verantwordlich
         this.canvas = canvas;
@@ -19,33 +21,62 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.checkCollisions();
+        this.run();
     }
 
     setWorld(){  // das der character und keyboard functionieren er is mit der world verbunden
         this.character.world = this;
     }
 
-    checkCollisions() {
+    run() {
         setInterval(() =>{
-            this.level.enimies.forEach( (enemy) =>{
-                if (this.character.isColliding(enemy) ) {
-                    this.character.hit();
-                    this.statusBar.setPercentage(this.character.energy);
-                }
-            });
-        }, 200); // milli Sek.
+            this.checkCollisions();
+            this.checkCollisionsCoin();
+            this.checkThrowObjects();
+        }, 100); // milli Sek.
+    } 
+
+    checkThrowObjects() {
+        if(this.keyboard.D) {
+            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+            this.throwableObjects.push(bottle)
+        }
     }
 
-    checkCollisionsCoin() {
-        setInterval(() =>{
-            this.level.enimies.forEach( (coin) =>{
-                if (this.character.isColliding(coin) ) {
-                    this.character.hitCoin();
-                    this.statusBarCoin.setPercentage(this.character.energy);
+    checkCollisions() {
+        if (this.character.isDead()) {
+            return; // Keine weiteren Kollisionen prüfen, wenn der Charakter tot ist
+        }
+    
+        this.level.enimies.forEach((enemy) => {
+            if (this.character.isColliding(enemy)) {
+                if (this.character.isAboveGround() && this.character.speedY < 0) {
+                    // Charakter springt auf das Huhn
+                    enemy.dead(); // Huhn stirbt
+                    this.character.speedY = 10; // Charakter prallt leicht zurück
+                } else if (!this.character.isInvincible) {
+                    // Normale Kollision, nur wenn der Charakter nicht unverwundbar ist
+                    this.character.hit(); // Schaden am Charakter
+                    this.statusBar.setPercentage(this.character.energy); // StatusBar aktualisieren
                 }
-            });
-        }, 200); // milli Sek.
+            }
+        });
+    }
+    
+    checkCollisionsCoin() {
+        for (let i = this.level.coins.length - 1; i >= 0; i--) {
+            const coin = this.level.coins[i];
+            if (this.character.isColliding(coin)) {
+                this.level.coins.splice(i, 1); // Entferne Münze
+                this.statusBarCoin.setPercentage(this.calculateCoinPercentage()); // Aktualisiere StatusBar
+            }
+        }
+    }
+
+    calculateCoinPercentage() {
+        const collectedCoins = this.totalCoins - this.level.coins.length; // Gesammelte Münzen
+        const percentage = (collectedCoins / this.totalCoins) * 100; // Prozentwert berechnen
+        return Math.min(percentage, 100); // Maximal 100%
     }
 
     draw(){
@@ -61,6 +92,7 @@ class World {
         this.addObjectsToMap(this.level.clouds);   //für alle Wolken 
         this.addObjectsToMap(this.level.enimies);  //für alle Chicken 
         this.addObjectsToMap(this.level.coins);  //für alle Coin 
+        this.addObjectsToMap(this.throwableObjects);
 
         this.ctx.translate(-this.camara_x, 0);
         this.addToMap(this.statusBar); // für statusbar

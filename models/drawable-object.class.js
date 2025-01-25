@@ -48,15 +48,15 @@ class DrawableObject {
            ctx.stroke();
         }  
   
-        if(this instanceof Coin) {
-           ctx.beginPath();
-           ctx.lineWidth = '2';
-           ctx.strokeStyle = 'blue';
-           ctx.rect(this.x +28, this.y + 28, this.width - 56, this.height - 55);
-           ctx.stroke();
-        }    
-    }
+        if (this instanceof Coin) {
+            ctx.beginPath();
+            ctx.lineWidth = '2';
+            ctx.strokeStyle = 'blue';
+            ctx.rect(this.x + 28, this.y + 28, this.width - 56, this.height - 55); // Passe diese Werte nach Bedarf an
+            ctx.stroke();
+        }   
 
+     }
 
 
 }

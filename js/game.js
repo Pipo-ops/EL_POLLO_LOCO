@@ -27,6 +27,10 @@ window.addEventListener('keydown', (e) => { // function um bei drücken der tast
     if(e.keyCode == 32) {
         keyboard.SPACE = true;
     }
+
+    if(e.keyCode == 68) {
+        keyboard.D = true;
+    }
 });
 
 window.addEventListener('keyup', (e) => { // function um bei drücken der taste auf false zu setzen
@@ -48,6 +52,10 @@ window.addEventListener('keyup', (e) => { // function um bei drücken der taste 
 
     if(e.keyCode == 32) {
         keyboard.SPACE = false;
+    }
+
+    if(e.keyCode == 68) {
+        keyboard.D = false;
     }
 });
 

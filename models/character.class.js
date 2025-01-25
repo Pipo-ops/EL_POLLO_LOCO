@@ -100,7 +100,7 @@ class Character extends MovableObject {
                     this.img = this.imageCache['img/2_character_pepe/2_walk/W-21.png']; // Setze Standardbild
                 }
             }
-        },50); // is die zeit der Animation
+        },80); // is die zeit der Animation
 
     }
    

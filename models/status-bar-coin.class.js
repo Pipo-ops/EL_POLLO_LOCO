@@ -23,26 +23,24 @@ class StatusBarCoin extends DrawableObject {
     }
 
     setPercentage(percentage) {
-        this.percentage = percentage;
-        let path = this.IMAGES[this.resolveImageIndex()];
-        this.img = this.imageCache[path];
-    }    
+        this.percentage = Math.min(percentage, 100); // Begrenze auf maximal 100%
+        const path = this.IMAGES[this.resolveImageIndex()];
+        this.img = this.imageCache[path]; // Bild setzen
+    }
 
-    resolveImageIndex(){
-
-        if(this.percentage == 0) {
+    resolveImageIndex() {
+        if (this.percentage >= 0 && this.percentage < 20) {
             return 0;
-        } else if(this.percentage == 20) {
+        } else if (this.percentage >= 20 && this.percentage < 40) {
             return 1;
-        } else if(this.percentage == 40) {
+        } else if (this.percentage >= 40 && this.percentage < 60) {
             return 2;
-        } else if(this.percentage == 60) {
-            return 3;    
-        } else if(this.percentage == 80) {
-            return 4; 
-        } else if(this.percentage == 100) {
-            return 5; 
-        }          
-
-    }   
+        } else if (this.percentage >= 60 && this.percentage < 80) {
+            return 3;
+        } else if (this.percentage >= 80 && this.percentage < 100) {
+            return 4;
+        } else {
+            return 5; // 100%
+        }
+    } 
 }
