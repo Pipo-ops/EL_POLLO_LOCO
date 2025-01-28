@@ -13,6 +13,7 @@ class World {
     statusBarCoin = new StatusBarCoin();
     totalCoins = this.level.coins.length;
     totalBottles = this.level.bottles.length;
+    collectedBottles = 0;
     throwableObjects = [];
 
     constructor(canvas, keyboard){          // diese funktion is in jeder class diese enthält alerdings die this.ctx = canvas.getContext('2d'); die is für das canvas verantwordlich
@@ -79,8 +80,9 @@ class World {
         for (let i = this.level.bottles.length - 1; i >= 0; i--) {
             const bottle = this.level.bottles[i];
             if (this.character.isColliding(bottle)) {
-                this.level.bottles.splice(i, 1); 
-                this.statusBarBottle.setPercentage(this.calculateBottlePercentage()); // Aktualisiere StatusBar
+                this.level.bottles.splice(i, 1); // Entferne die Flasche aus dem Spiel
+                this.collectedBottles++; // Erhöhe die Anzahl der gesammelten Flaschen
+                this.statusBarBottle.setPercentage(this.calculateBottlePercentage()); // Statusbar aktualisieren
             }
         }
     }
@@ -92,9 +94,23 @@ class World {
     }
 
     calculateBottlePercentage() {
-        const collectedBottles = this.totalBottles - this.level.bottles.length; // Gesammelte Münzen
-        const percentage = (collectedBottles / this.totalBottles  ) * 100; // Prozentwert berechnen
+        const percentage = (this.collectedBottles / this.totalBottles) * 100;
         return Math.min(percentage, 100); // Maximal 100%
+    }
+    
+    checkThrowObjects() {
+        if (this.keyboard.D && this.collectedBottles > 0) { // Nur werfen, wenn Flaschen verfügbar sind
+            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+            this.throwableObjects.push(bottle);
+            this.collectedBottles--; // Eine Flasche wird verbraucht
+            this.statusBarBottle.setPercentage(this.calculateBottlePercentage()); // Statusbar aktualisieren
+        }
+    }
+
+    setPercentage(percentage) {
+        this.percentage = Math.max(percentage, 0); // Stelle sicher, dass es nicht unter 0% fällt
+        let path = this.IMAGES[this.resolveImageIndex()];
+        this.img = this.imageCache[path];
     }
 
     draw(){
