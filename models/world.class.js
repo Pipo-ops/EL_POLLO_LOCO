@@ -67,20 +67,18 @@ class World {
     }
     
     checkCollisionsCoin() {
-        for (let i = this.level.coins.length - 1; i >= 0; i--) {
-            const coin = this.level.coins[i];
-            if (this.character.isColliding(coin)) {
-                this.level.coins.splice(i, 1); // Entferne Münze
+        for (this.i = this.level.coins.length - 1; this.i >= 0; this.i--) {
+            if (this.character.isColliding(this.level.coins[this.i])) {
+                this.level.coins.splice(this.i, 1); // Entferne Münze
                 this.statusBarCoin.setPercentage(this.calculateCoinPercentage()); // Aktualisiere StatusBar
             }
         }
     }
 
     checkCollisionsBottle() {
-        for (let i = this.level.bottles.length - 1; i >= 0; i--) {
-            const bottle = this.level.bottles[i];
-            if (this.character.isColliding(bottle)) {
-                this.level.bottles.splice(i, 1); // Entferne die Flasche aus dem Spiel
+        for (this.i = this.level.bottles.length - 1; this.i >= 0; this.i--) {
+            if (this.character.isColliding(this.level.bottles[this.i])) {
+                this.level.bottles.splice(this.i, 1); // Entferne die Flasche aus dem Spiel
                 this.collectedBottles++; // Erhöhe die Anzahl der gesammelten Flaschen
                 this.statusBarBottle.setPercentage(this.calculateBottlePercentage()); // Statusbar aktualisieren
             }
@@ -88,20 +86,16 @@ class World {
     }
 
     calculateCoinPercentage() {
-        const collectedCoins = this.totalCoins - this.level.coins.length; // Gesammelte Münzen
-        const percentage = (collectedCoins / this.totalCoins) * 100; // Prozentwert berechnen
-        return Math.min(percentage, 100); // Maximal 100%
+        return Math.min(((this.totalCoins - this.level.coins.length) / this.totalCoins) * 100, 100);
     }
 
     calculateBottlePercentage() {
-        const percentage = (this.collectedBottles / this.totalBottles) * 100;
-        return Math.min(percentage, 100); // Maximal 100%
+        return Math.min((this.collectedBottles / this.totalBottles) * 100, 100);
     }
     
     checkThrowObjects() {
         if (this.keyboard.D && this.collectedBottles > 0) { // Nur werfen, wenn Flaschen verfügbar sind
-            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
-            this.throwableObjects.push(bottle);
+            this.throwableObjects.push(new ThrowableObject(this.character.x + 100, this.character.y + 100));
             this.collectedBottles--; // Eine Flasche wird verbraucht
             this.statusBarBottle.setPercentage(this.calculateBottlePercentage()); // Statusbar aktualisieren
         }
@@ -109,8 +103,7 @@ class World {
 
     setPercentage(percentage) {
         this.percentage = Math.max(percentage, 0); // Stelle sicher, dass es nicht unter 0% fällt
-        let path = this.IMAGES[this.resolveImageIndex()];
-        this.img = this.imageCache[path];
+        this.img = this.imageCache[this.IMAGES[this.resolveImageIndex()]];
     }
 
     draw(){

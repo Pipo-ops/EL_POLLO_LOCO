@@ -51,14 +51,14 @@ class MovableObject extends DrawableObject {
           this.lastHit = new Date().getTime(); // Zeit des letzten Treffers speichern
           this.makeInvincible(); // Unverwundbarkeit aktivieren
       }
-  }
+   }
 
-  makeInvincible() {
-   this.isInvincible = true; // Unverwundbar machen
-   setTimeout(() => {
-       this.isInvincible = false; // Nach 2 Sekunden wieder verwundbar
-   }, 1000); // 1000 ms = 1 Sekunden
-}
+   makeInvincible() {
+      this.isInvincible = true; // Unverwundbar machen
+      setTimeout(() => {
+         this.isInvincible = false; // Nach 2 Sekunden wieder verwundbar
+      }, 1000); // 1000 ms = 1 Sekunden
+   }
 
    hitCoin() {
       this.lastHit = new Date().getTime();
