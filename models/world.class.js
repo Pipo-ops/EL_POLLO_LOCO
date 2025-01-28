@@ -12,6 +12,7 @@ class World {
     statusBarBottle = new StatusBarBottle();
     statusBarCoin = new StatusBarCoin();
     totalCoins = this.level.coins.length;
+    totalBottles = this.level.bottles.length;
     throwableObjects = [];
 
     constructor(canvas, keyboard){          // diese funktion is in jeder class diese enthält alerdings die this.ctx = canvas.getContext('2d'); die is für das canvas verantwordlich
@@ -32,6 +33,7 @@ class World {
         setInterval(() =>{
             this.checkCollisions();
             this.checkCollisionsCoin();
+            this.checkCollisionsBottle();
             this.checkThrowObjects();
         }, 100); // milli Sek.
     } 
@@ -73,9 +75,25 @@ class World {
         }
     }
 
+    checkCollisionsBottle() {
+        for (let i = this.level.bottles.length - 1; i >= 0; i--) {
+            const bottle = this.level.bottles[i];
+            if (this.character.isColliding(bottle)) {
+                this.level.bottles.splice(i, 1); 
+                this.statusBarBottle.setPercentage(this.calculateBottlePercentage()); // Aktualisiere StatusBar
+            }
+        }
+    }
+
     calculateCoinPercentage() {
         const collectedCoins = this.totalCoins - this.level.coins.length; // Gesammelte Münzen
         const percentage = (collectedCoins / this.totalCoins) * 100; // Prozentwert berechnen
+        return Math.min(percentage, 100); // Maximal 100%
+    }
+
+    calculateBottlePercentage() {
+        const collectedBottles = this.totalBottles - this.level.bottles.length; // Gesammelte Münzen
+        const percentage = (collectedBottles / this.totalBottles  ) * 100; // Prozentwert berechnen
         return Math.min(percentage, 100); // Maximal 100%
     }
 
@@ -91,7 +109,8 @@ class World {
         this.addToMap(this.character); // für den charactar (PEPE)
         this.addObjectsToMap(this.level.clouds);   //für alle Wolken 
         this.addObjectsToMap(this.level.enimies);  //für alle Chicken 
-        this.addObjectsToMap(this.level.coins);  //für alle Coin 
+        this.addObjectsToMap(this.level.coins);  //für alle Coin
+        this.addObjectsToMap(this.level.bottles); 
         this.addObjectsToMap(this.throwableObjects);
 
         this.ctx.translate(-this.camara_x, 0);
