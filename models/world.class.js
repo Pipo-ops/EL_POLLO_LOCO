@@ -28,6 +28,9 @@ class World {
 
     setWorld(){  // das der character und keyboard functionieren er is mit der world verbunden
         this.character.world = this;
+        this.level.enimies.forEach(enemy => {
+            enemy.world = this;  // Welt zuweisen
+        });    
     }
 
     run() {
@@ -36,6 +39,7 @@ class World {
             this.checkCollisionsCoin();
             this.checkCollisionsBottle();
             this.checkThrowObjects();
+            this.checkBottleCollision();  
         }, 100); // milli Sek.
     } 
 
@@ -81,6 +85,23 @@ class World {
                 this.level.bottles.splice(this.i, 1); // Entferne die Flasche aus dem Spiel
                 this.collectedBottles++; // Erhöhe die Anzahl der gesammelten Flaschen
                 this.statusBarBottle.setPercentage(this.calculateBottlePercentage()); // Statusbar aktualisieren
+            }
+        }
+    }
+
+    checkBottleCollision() {
+        for (this.i = this.throwableObjects.length - 1; this.i >= 0; this.i--) {
+            let bottle = this.throwableObjects[this.i];
+            
+            // Prüfe Kollision mit normalen Hühnern
+            for (this.j = this.level.enimies.length - 1; this.j >= 0; this.j--) {
+                let enemy = this.level.enimies[this.j];
+                
+                if (bottle.isColliding(enemy)) {
+                    enemy.hitByBottle();  // Animation starten und chicken verschwinden lassen
+                    this.throwableObjects.splice(this.i, 1);  // Entferne die Flasche nach der Kollision
+                    break;
+                }
             }
         }
     }

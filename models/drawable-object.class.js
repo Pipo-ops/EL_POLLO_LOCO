@@ -36,7 +36,7 @@ class DrawableObject {
            ctx.beginPath();
            ctx.lineWidth = '2';
            ctx.strokeStyle = 'blue';
-           ctx.rect(this.x + 25, this.y +110, this.width - 50, this.height - 123);
+           ctx.rect(this.x + 35, this.y +110, this.width - 80, this.height - 123);
            ctx.stroke();
         } 
         
@@ -54,7 +54,15 @@ class DrawableObject {
             ctx.strokeStyle = 'blue';
             ctx.rect(this.x + 28, this.y + 28, this.width - 56, this.height - 55); // Passe diese Werte nach Bedarf an
             ctx.stroke();
-        }   
+        } 
+        
+        if (this instanceof ChickenBoss ) {
+            ctx.beginPath();
+            ctx.lineWidth = '2';
+            ctx.strokeStyle = 'blue';
+            ctx.rect(this.x + 20, this.y + 85, this.width - 56, this.height - 100); // Passe diese Werte nach Bedarf an
+            ctx.stroke();
+        } 
 
      }
 

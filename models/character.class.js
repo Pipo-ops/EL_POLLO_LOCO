@@ -106,7 +106,7 @@ class Character extends MovableObject {
    
     jump() {
         if (!this.isAboveGround()) { // Nur springen, wenn der Charakter am Boden ist
-            this.speedY = 30; // Setzt die Sprunggeschwindigkeit nach oben
+            this.speedY = 30; // Setzt die Sprunggeschwindigkeit nach oben 
         }
     }
 }
