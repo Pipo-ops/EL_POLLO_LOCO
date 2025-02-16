@@ -9,12 +9,18 @@ class World {
     keyboard;
     camara_x = 0;
     statusBar = new StatusBarHealth();
+    statusbarChickenBoss = new StatusbarChickenBoss();
     statusBarBottle = new StatusBarBottle();
     statusBarCoin = new StatusBarCoin();
     totalCoins = this.level.coins.length;
     totalBottles = this.level.bottles.length;
     collectedBottles = 0;
     throwableObjects = [];
+    canThrow = true;
+    gameState = 'start'; // Neuer Status für Startscreen
+    startScreenImage = new Image();
+    showStartScreen = true; // Startscreen aktiv
+
 
     constructor(canvas, keyboard){          // diese funktion is in jeder class diese enthält alerdings die this.ctx = canvas.getContext('2d'); die is für das canvas verantwordlich
         this.canvas = canvas;
@@ -34,13 +40,12 @@ class World {
     }
 
     run() {
-        setInterval(() =>{
+        setInterval(() =>{ 
             this.checkCollisions();
             this.checkCollisionsCoin();
             this.checkCollisionsBottle();
-            this.checkThrowObjects();
-            this.checkBottleCollision();  
-        }, 100); // milli Sek.
+            this.checkThrowObjects(); 
+        }, 100); 
     } 
 
     checkThrowObjects() {
@@ -58,15 +63,31 @@ class World {
         this.level.enimies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
                 if (this.character.isAboveGround() && this.character.speedY < 0) {
-                    // Charakter springt auf das Huhn
-                    enemy.dead(); // Huhn stirbt
-                    this.character.speedY = 10; // Charakter prallt leicht zurück
+                    // Charakter springt auf das Chicken
+                    enemy.dead(); // Chicken stirbt
+                    this.character.speedY = 15; // Rückstoß nach oben für den Charakter
                 } else if (!this.character.isInvincible) {
                     // Normale Kollision, nur wenn der Charakter nicht unverwundbar ist
                     this.character.hit(); // Schaden am Charakter
                     this.statusBar.setPercentage(this.character.energy); // StatusBar aktualisieren
                 }
             }
+        });
+    }
+
+    checkBottleCollision() {
+        this.throwableObjects.forEach((bottle) => {
+            this.level.enimies.forEach((enemy) => {
+                if (bottle.isColliding(enemy)) {
+                    if (enemy instanceof ChickenBoss) {
+                        enemy.hit(); // ChickenBoss nimmt Schaden
+                    } else {
+                        enemy.dead(); // Normale Chickens sterben sofort
+                    }
+    
+                    bottle.break(); // Flasche soll zerbrechen
+                }
+            });
         });
     }
     
@@ -85,23 +106,6 @@ class World {
                 this.level.bottles.splice(this.i, 1); // Entferne die Flasche aus dem Spiel
                 this.collectedBottles++; // Erhöhe die Anzahl der gesammelten Flaschen
                 this.statusBarBottle.setPercentage(this.calculateBottlePercentage()); // Statusbar aktualisieren
-            }
-        }
-    }
-
-    checkBottleCollision() {
-        for (this.i = this.throwableObjects.length - 1; this.i >= 0; this.i--) {
-            let bottle = this.throwableObjects[this.i];
-            
-            // Prüfe Kollision mit normalen Hühnern
-            for (this.j = this.level.enimies.length - 1; this.j >= 0; this.j--) {
-                let enemy = this.level.enimies[this.j];
-                
-                if (bottle.isColliding(enemy)) {
-                    enemy.hitByBottle();  // Animation starten und chicken verschwinden lassen
-                    this.throwableObjects.splice(this.i, 1);  // Entferne die Flasche nach der Kollision
-                    break;
-                }
             }
         }
     }
@@ -142,6 +146,7 @@ class World {
         this.addObjectsToMap(this.level.coins);  //für alle Coin
         this.addObjectsToMap(this.level.bottles); 
         this.addObjectsToMap(this.throwableObjects);
+        this.addToMap(this.statusbarChickenBoss);
 
         this.ctx.translate(-this.camara_x, 0);
         this.addToMap(this.statusBar); // für statusbar
@@ -189,6 +194,16 @@ class World {
     flipImageBack(mo) {
         mo.x = mo.x * -1;
         this.ctx.restore();
+    }
+
+    showWinScreen() {
+        let winImage = new Image();
+        winImage.src = 'img/9_intro_outro_screens/win/win_2.png';
+    
+        winImage.onload = () => {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Canvas leeren
+            this.ctx.drawImage(winImage, 0, 0, this.canvas.width, this.canvas.height);
+        };
     }
 
 }

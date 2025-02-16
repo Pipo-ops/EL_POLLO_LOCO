@@ -1,11 +1,37 @@
 let canvas;
+let ctx;
+let gameStarted = false;
 let world;
 let keyboard = new Keyboard();
 
-function init(){ // wird auf der index.html bei onload aktiviert und ladet das canvas 
+function init() {
     canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard);
-} 
+    ctx = canvas.getContext('2d');
+    showStartScreen(); // Zeige das Startbild zuerst
+}
+
+function showStartScreen() {
+    let startImage = new Image();
+    startImage.src = 'img/9_intro_outro_screens/start/startscreen_1.png';
+    
+    startImage.onload = function () {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(startImage, 0, 0, canvas.width, canvas.height);
+    };
+}
+
+function startGame() {
+    if (!gameStarted) { // Nur starten, wenn es noch nicht läuft
+        gameStarted = true;
+        world = new World(canvas, keyboard); // Keyboard-Objekt mitgeben!
+    }
+}
+
+// Event-Listener für den Button
+document.addEventListener("DOMContentLoaded", function () {
+    let playButton = document.querySelector('.play-btn');
+    playButton.addEventListener("click", startGame);
+});
 
 window.addEventListener('keydown', (e) => { // function um bei drücken der taste auf true zu setzen
     if(e.keyCode == 39) {

@@ -36,17 +36,12 @@ class Chicken extends MovableObject {
             //this.chicken_sound.play();
         }, 150);
     }
-
-
+    
+    
     hitByBottle() {
-        setInterval(() => {
-            this.playAnimation(this.IMAGES_WALKING);
-            //this.chicken_sound.play();
-        }, 150);
-        
-        setTimeout(() => {
-            this.removeFromWorld();  // Entferne das Huhn nach kurzer Zeit
-        }, 500);  // Das Huhn verschwindet nach 500ms
+        this.isDead = true;  // Markiere das chicken als tot
+        clearInterval(this.animationInterval);  // Stoppe andere Animationen
+        this.dead();  // Starte die Todesanimation  
     }
 
     dead() {
@@ -57,16 +52,7 @@ class Chicken extends MovableObject {
             if (index > -1) {
                 level1.enimies.splice(index, 1); // Entferne das Huhn nach der Verzögerung
             }
-        }, 70); // Zeige das "tot"-Bild für 500ms an, bevor das Huhn verschwindet
-    }
-
-    removeFromWorld() {
-        if (this.world && this.world.level) {  // Prüfen, ob die Welt und das Level definiert sind
-            let index = this.world.level.enimies.indexOf(this);
-            if (index > -1) {
-                this.world.level.enimies.splice(index, 1);  // Huhn aus dem Array entfernen
-            }
-        } 
+        }, 100); // Zeige das "tot"-Bild für 500ms an, bevor das Huhn verschwindet
     }
 
 }    

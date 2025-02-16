@@ -33,12 +33,14 @@ class MovableObject extends DrawableObject {
    }
 
    isColliding(mo) {
-      return this.x + this.width - 20 > mo.x &&
-            this.y + this.height > mo.y &&
-            this.x < mo.x &&
-            this.y < mo.y + mo.height;
-   }
-
+      return (
+          this.x + this.width + 20 > mo.x && // Reduzierte Breite für präzisere Kollision
+          this.y + this.height + 20 > mo.y && // Kollision wird weiter unten registriert
+          this.x + 20 < mo.x + mo.width && // Charakter darf nicht zu weit weg sein
+          this.y + 20 < mo.y + mo.height // Charakter darf nicht zu tief sein
+      );
+  }
+  
    hit() {
       if (this.isInvincible) {
           return; // Charakter ist unverwundbar und kann keinen Schaden nehmen
@@ -56,8 +58,8 @@ class MovableObject extends DrawableObject {
    makeInvincible() {
       this.isInvincible = true; // Unverwundbar machen
       setTimeout(() => {
-         this.isInvincible = false; // Nach 2 Sekunden wieder verwundbar
-      }, 1000); // 1000 ms = 1 Sekunden
+         this.isInvincible = false;
+      }, 500); // 500 ms = 1/2 Sekunden
    }
 
    hitCoin() {

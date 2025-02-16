@@ -12,24 +12,102 @@ body{
     align-items: center;
     background-image: url('img/11.background_body/road-1303617_1920.jpg');
     background-size:cover;
+    background-position: center center;
+    background-repeat: no-repeat;
     font-family: 'la-Tequila', Arial, Helvetica, sans-serif;
     text-shadow: 8px 8px 8px rgba(0, 0, 0, 0.5);
 }
 
 h1 {
-    font-size: 35px;
+    font-size: 30px;
 }
+
+.game-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+}
+
+.play-btn{
+    font-family: 'la-Tequila', Arial, Helvetica, sans-serif;
+    background-color: orangered;
+    width: 200px;
+    height: 80px;
+    border-radius: 20px;
+    box-shadow: 2px 2px 2px 1px;
+}
+
+.play-btn:hover{
+    background-color: orange;
+    
+}
+
+.controls {
+    background-color: orange;
+    border: 3px solid black;
+    border-radius: 15px;
+    padding: 5px;
+    font-size: 7px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.control-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; 
+    margin: 5px 0;
+}
+
+.key-icon {
+    width: 50px; 
+    height: 50px;
+}
+
+.controls h2 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+    text-decoration: underline;
+}
+
+.controls span {
+    font-size: 18px;
+}
+
 canvas {
-    margin-top: 20px;
     background-color: black;
-    border: 10px solid;
+    border: 7px solid;
+    border-radius: 20px;
     display: block;
+    box-shadow: 2px 2px 2px 1px;
+    margin-bottom: 20px;
+}
+
+.link-by{
+    font-size: 5px;
+    margin-top: 10px;
 }
 
 @media only screen and (max-width: 760px) {
     canvas {
         width: 100%;
     } 
+
+    .game-controls {
+        flex-direction: column; /* Untereinander anordnen auf kleinen Bildschirmen */
+    }
+
+    .controls {
+        margin-top: 10px; /* Kleiner Abstand für mobile Ansicht */
+    }
 }
 
 @media only screen and (max-height: 480px) {

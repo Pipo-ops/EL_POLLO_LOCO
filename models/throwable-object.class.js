@@ -19,42 +19,70 @@ class ThrowableObject extends MovableObject {
     constructor(x, y){
         super().loadImage('img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
         this.loadImages(this.IMAGES_ROTATION);
+        this.loadImages(this.IMAGES_BREAK);
         this.x = x;
         this.y = y;
         this.height = 70;
         this.width = 60;
-        this.trow(); 
+        this.speedX = 20;
+        this.speedY = 15; 
+        this.throw(); 
         this.animate();
     }
 
-    trow () {
-        this.speedY = 15;
+    throw() {
         this.applyGravity();
-        setInterval(() => {
-            this.x += 15;
-        }, 25);
+
+        let moveInterval = setInterval(() => {
+            this.x += this.speedX;
+
+            if (this.hasHitGround() || this.hasHitEnemy()) { 
+                clearInterval(moveInterval); // Stoppe die Bewegung
+                this.break(); 
+            }
+        }, 50);
     }
 
-    animate(){ // Diese function fürt die animation aus 
-         
-        setInterval(() => {
-            this.playAnimation(this.IMAGES_ROTATION);
-            
-        },40); // is die zeit der Animation
+    animate() { 
+        let rotationInterval = setInterval(() => {
+            if (!this.isBroken) { // Animation nur, wenn die Flasche noch nicht zerbrochen ist
+                this.playAnimation(this.IMAGES_ROTATION);
+            } else {
+                clearInterval(rotationInterval);
+            }
+        }, 40);
     }
 
-    breakBottle() {
-        this.playAnimation(this.IMAGES_BREAK);  // Spiele die Zersplitterungsanimation ab
-        
+    hasHitGround() {
+        return this.y >= 345; // Falls die Flasche auf den Boden trifft
+    }
+
+    hasHitEnemy() {
+        return world.level.enimies.some(enemy => {
+            if (this.isColliding(enemy)) {
+                if (enemy instanceof ChickenBoss) {
+                    enemy.hit(); // Boss nimmt Schaden
+                } else {
+                    enemy.dead(); // Normales Chicken stirbt sofort
+                }
+                return true; // Treffer erkannt
+            }
+            return false;
+        });
+    }
+
+    break() {
+        this.isBroken = true;
+        this.playAnimation(this.IMAGES_BREAK); 
+
         setTimeout(() => {
-            this.removeFromWorld();  // Entferne die Flasche nach der Animation
-        }, 300);
-    }
-
-    removeFromWorld() {
-        let index = this.world.throwableObjects.indexOf(this);
-        if (index > -1) {
-            this.world.throwableObjects.splice(index, 1);
-        }
+            let index = world.throwableObjects.indexOf(this);
+            if (index > -1) {
+                world.throwableObjects.splice(index, 1); 
+            }
+        }, 800); 
     }
 }
+
+    
+

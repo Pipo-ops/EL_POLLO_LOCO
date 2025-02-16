@@ -1,12 +1,10 @@
-class ChickenBoss extends MovableObject{
-
+class ChickenBoss extends MovableObject {
     y = 85;
-
     height = 350;
     width = 250;
-    health = 3; 
+    health = 3;
     isDead = false;
-    isHurt = false;
+    isAttacking = false; // Neue Variable: Ist der Boss im Angriffsmodus?
 
     IMAGES_ANGRY = [
         'img/4_enemie_boss_chicken/2_alert/G5.png',
@@ -38,44 +36,121 @@ class ChickenBoss extends MovableObject{
         'img/4_enemie_boss_chicken/5_dead/G26.png',
     ];
 
-    constructor(){
-        super().loadImage(this.IMAGES_ANGRY [0]);    // auch eine möglichkeit um das Bild zu Laden
-        this.loadImages(this.IMAGES_ANGRY );
+    IMAGES_ATTACK = [
+        'img/4_enemie_boss_chicken/3_attack/G13.png',
+        'img/4_enemie_boss_chicken/3_attack/G14.png',
+        'img/4_enemie_boss_chicken/3_attack/G15.png',
+        'img/4_enemie_boss_chicken/3_attack/G16.png',
+        'img/4_enemie_boss_chicken/3_attack/G17.png',
+        'img/4_enemie_boss_chicken/3_attack/G18.png',
+        'img/4_enemie_boss_chicken/3_attack/G19.png',
+        'img/4_enemie_boss_chicken/3_attack/G20.png'
+    ];
+
+    constructor() {
+        super();
+        this.loadImages(this.IMAGES_ANGRY);
+        this.loadImages(this.IMAGES_WALKING);
+        this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_DEAD);
+        this.loadImages(this.IMAGES_ATTACK);
 
         this.x = 2500;
-        this.animate();
+        this.img = new Image();
+        this.img.src = this.IMAGES_ANGRY[0];
+
+        this.img.onload = () => {
+            this.animate();
+        };
     }
 
-    animate(){ // Diese function fürt die animation aus 
- 
-        setInterval(() => {
-            this.playAnimation(this.IMAGES_ANGRY );
-        },240); // is die zeit der Animation
+    animate() {
+        this.animationInterval = setInterval(() => {
+            if (!this.isDead) {
+                if (!this.isAttacking && this.isCharacterInSight()) {
+                    this.playAnimation(this.IMAGES_ANGRY);
+                    setTimeout(() => {
+                        this.startAttack();
+                    }, 2000);
+                }
+            }
+        }, 240);
     }
 
-    hitByBottle() {
-        this.health--;
-        
-        if (this.health > 0) {
-            this.loadImage(this.IMAGES_HURT[0]);  // Zeige das verletzte Bild
+    isCharacterInSight() {
+        if (!world || !world.character) return false; // Stelle sicher, dass world und character existieren
+    
+        let distance = Math.abs(world.character.x - this.x);
+        return distance < 500;
+    }
+
+    startAttack() {
+        this.isAttacking = true;
+        clearInterval(this.animationInterval);
+        this.animationInterval = setInterval(() => {
+            if (!this.isDead) {
+                this.playAnimation(this.IMAGES_WALKING);
+                this.moveTowardsCharacter();
+            }
+        }, 150);
+    }
+
+    moveTowardsCharacter() {
+        let speed = 8; 
+        if (this.x > world.character.x) {
+            this.x -= speed;
         } else {
-            this.isDead = true;  // Markiere den Boss als tot
-            this.playDeathAnimation();  // Starte die Todesanimation
+            this.x += speed;
+        }
+
+        if (this.isColliding(world.character)) {
+            world.character.hit();
+            this.isAttacking = false;
+            clearInterval(this.animationInterval);
+            this.startAttackMode(); // Wechsel in Attack-Mode nach erstem Treffer
         }
     }
-    
-    playDeathAnimation() {
-        this.loadImages(this.IMAGES_DEAD);
-        this.currentImage = 0;
 
-        this.deathAnimationInterval = setInterval(() => {
-            this.playAnimation(this.IMAGES_DEAD);
-
-            if (this.currentImage >= this.IMAGES_DEAD.length) {
-                clearInterval(this.deathAnimationInterval);  // Stoppe die Animation nach dem letzten Bild
-                this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);  // Bleibe beim letzten Bild stehen
+    startAttackMode() {
+        this.isAttacking = true;
+        clearInterval(this.animationInterval);
+        this.animationInterval = setInterval(() => {
+            if (!this.isDead) {
+                this.playAnimation(this.IMAGES_ATTACK); // Attack-Animation starten
+                this.moveTowardsCharacter(); // Weiterhin Charakter verfolgen
             }
-        }, 300);  // Geschwindigkeit der Todesanimation
+        }, 150);
     }
 
+    hit() {
+        if (!this.isDead) {
+            this.health--;
+            world.statusbarChickenBoss.setPercentage(this.health * 33.3);
+
+            if (this.health > 0) {
+                this.playAnimation(this.IMAGES_HURT);
+                setTimeout(() => {
+                    this.startAttackMode(); // Nach erstem Treffer wechselt er in den Attack-Modus
+                }, 500);
+            } else {
+                this.die();
+            }
+        }
+    }
+
+    die() {
+        this.isDead = true;
+        clearInterval(this.animationInterval); // Stoppe die bisherige Animation
+    
+        let deathAnimationIndex = 0;
+        let deathAnimationInterval = setInterval(() => {
+            if (deathAnimationIndex < this.IMAGES_DEAD.length) {
+                this.img = this.imageCache[this.IMAGES_DEAD[deathAnimationIndex]]; // Setze das nächste Bild der Animation
+                deathAnimationIndex++;
+            } else {
+                clearInterval(deathAnimationInterval); // Beende die Animation
+                this.img = this.imageCache[this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]]; // Bleibe beim letzten Bild
+            }
+        }, 200); // 200ms für jedes Bild der Dead-Animation
+    }
 }
