@@ -13,6 +13,7 @@ class Chicken extends MovableObject {
     IMAGES_DEAD = [
         'img/3_enemies_chicken/chicken_normal/2_dead/dead.png',   
     ];
+
     chicken_sound = new Audio('audio/chicken/766255__edenfallen__anmlfarm-ext_chickensclucking_siyabonga_ngobese_owsfx.wav');
 
     constructor(){ // ist in jeder class zu finden 
@@ -22,7 +23,7 @@ class Chicken extends MovableObject {
         this.x = 200 + Math.random() * 1900; // zufälliges erscheinen zwischen 200 und 700 bei jedem neuen Laden
         this.speed = 0.15 + Math.random() * 0.5; // hir wird die geschwindichkeit berechnet 
 
-        this.chicken_sound.volume = 0.009;
+        this.chicken_sound.volume = 0.005;
         this.animate();
     }
 

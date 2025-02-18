@@ -47,6 +47,8 @@ class ChickenBoss extends MovableObject {
         'img/4_enemie_boss_chicken/3_attack/G20.png'
     ];
 
+    CHICKEN_BOSS_SOUND = new Audio('audio/chicken/754972__mastersoundboy2005__reverse-bird-clucking.wav');
+
     constructor() {
         super();
         this.loadImages(this.IMAGES_ANGRY);
@@ -58,6 +60,8 @@ class ChickenBoss extends MovableObject {
         this.x = 2500;
         this.img = new Image();
         this.img.src = this.IMAGES_ANGRY[0];
+
+        this.CHICKEN_BOSS_SOUND.volume = 0.2;
 
         this.img.onload = () => {
             this.animate();
@@ -91,6 +95,7 @@ class ChickenBoss extends MovableObject {
             if (!this.isDead) {
                 this.playAnimation(this.IMAGES_WALKING);
                 this.moveTowardsCharacter();
+                this.CHICKEN_BOSS_SOUND.play();
             }
         }, 150);
     }
@@ -150,7 +155,13 @@ class ChickenBoss extends MovableObject {
             } else {
                 clearInterval(deathAnimationInterval); // Beende die Animation
                 this.img = this.imageCache[this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]]; // Bleibe beim letzten Bild
+    
+                setTimeout(() => {
+                    showWinScreen(); // WIN-Overlay anzeigen
+                }, 500); // Warte 1 Sekunde nach der Death-Animation
             }
         }, 200); // 200ms für jedes Bild der Dead-Animation
     }
+    
+     
 }

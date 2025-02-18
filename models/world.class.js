@@ -45,8 +45,28 @@ class World {
             this.checkCollisionsCoin();
             this.checkCollisionsBottle();
             this.checkThrowObjects(); 
+            this.checkGameOver();
+            this.checkWin();
         }, 100); 
-    } 
+    }
+    
+    checkGameOver() {
+        if (this.character.isDead()) {
+            if (!document.getElementById('game-over-screen')) { // Prüft, ob es schon angezeigt wird
+                stopGame();
+                showGameOverScreen();
+                changePlayButtonToRestart();
+            }
+        }
+    }
+    
+    checkWin() {
+        if (this.level.enimies.length === 0 && !document.getElementById('win-screen')) { 
+            stopGame();
+            showWinScreen();
+            changePlayButtonToRestart();
+        }
+    }
 
     checkThrowObjects() {
         if(this.keyboard.D) {
@@ -163,7 +183,7 @@ class World {
         });
 
     }
-
+    
     addToMap(mo) { // vereinfachte funktion für MovebleObjekt
 
         if (mo.otherDirection) { // diese fuction is dafür da um das bild zu spiegel wenn er nach links zum Bsp läuft
@@ -194,16 +214,6 @@ class World {
     flipImageBack(mo) {
         mo.x = mo.x * -1;
         this.ctx.restore();
-    }
-
-    showWinScreen() {
-        let winImage = new Image();
-        winImage.src = 'img/9_intro_outro_screens/win/win_2.png';
-    
-        winImage.onload = () => {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Canvas leeren
-            this.ctx.drawImage(winImage, 0, 0, this.canvas.width, this.canvas.height);
-        };
     }
 
 }

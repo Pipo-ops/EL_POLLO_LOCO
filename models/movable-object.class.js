@@ -34,8 +34,8 @@ class MovableObject extends DrawableObject {
 
    isColliding(mo) {
       return (
-          this.x + this.width + 20 > mo.x && // Reduzierte Breite für präzisere Kollision
-          this.y + this.height + 20 > mo.y && // Kollision wird weiter unten registriert
+          this.x + this.width -10> mo.x && // Reduzierte Breite für präzisere Kollision
+          this.y + this.height + 10 > mo.y && // Kollision wird weiter unten registriert
           this.x + 20 < mo.x + mo.width && // Charakter darf nicht zu weit weg sein
           this.y + 20 < mo.y + mo.height // Charakter darf nicht zu tief sein
       );

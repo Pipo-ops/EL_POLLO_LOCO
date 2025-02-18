@@ -16,6 +16,8 @@ class ThrowableObject extends MovableObject {
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
     ];
 
+    BOTTLE_BREAK_SOUND = new Audio('audio/bottle/523063__magnuswaker__glass-smash-2.wav');
+
     constructor(x, y){
         super().loadImage('img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
         this.loadImages(this.IMAGES_ROTATION);
@@ -28,6 +30,7 @@ class ThrowableObject extends MovableObject {
         this.speedY = 15; 
         this.throw(); 
         this.animate();
+        this.BOTTLE_BREAK_SOUND.volume = 0.015;
     }
 
     throw() {
@@ -55,6 +58,7 @@ class ThrowableObject extends MovableObject {
 
     hasHitGround() {
         return this.y >= 345; // Falls die Flasche auf den Boden trifft
+        
     }
 
     hasHitEnemy() {
@@ -73,6 +77,7 @@ class ThrowableObject extends MovableObject {
 
     break() {
         this.isBroken = true;
+        this.BOTTLE_BREAK_SOUND.play();
         this.playAnimation(this.IMAGES_BREAK); 
 
         setTimeout(() => {
