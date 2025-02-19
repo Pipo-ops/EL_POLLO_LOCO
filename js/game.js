@@ -3,6 +3,9 @@ let ctx;
 let gameStarted = false;
 let world;
 let keyboard = new Keyboard();
+let winSound = new Audio('audio/backgound_musik/177304__lenguaverde__jarabe-tapatio-mariachi (1).mp3');
+let gameOverSound = new Audio('audio/backgound_musik/76376__deleted_user_877451__game_over.wav');
+
 
 function init() {
     canvas = document.getElementById('canvas');
@@ -23,19 +26,27 @@ function showStartScreen() {
 function startGame() {
     if (!gameStarted) { // Nur starten, wenn es noch nicht läuft
         gameStarted = true;
-        world = new World(canvas, keyboard); // Keyboard-Objekt mitgeben!
+        keyboard = new Keyboard();
+        world = new World(canvas, keyboard); // Welt mit Keyboard verbinden
+        
+        requestAnimationFrame(() => world.draw()); // Zeichne das Spiel erst jetzt
     }
 }
 
+
 function showWinScreen() {
-    let canvasContainer = document.getElementById('canvas-container'); // Container für das Canvas
+    stopGame(); // Spiel & Sounds stoppen
+    stopAllSounds(); // Alle Sounds muten
+    winSound.play(); // Win-Sound abspielen
+
+    let canvasContainer = document.getElementById('canvas-container');
     let winOverlay = document.createElement('div');
     winOverlay.id = 'win-screen';
     winOverlay.style.position = 'absolute';
     winOverlay.style.top = '0';
     winOverlay.style.left = '0';
     winOverlay.style.width = '100%';
-    winOverlay.style.height = '97%';
+    winOverlay.style.height = '96%';
     winOverlay.style.display = 'flex';
     winOverlay.style.justifyContent = 'center';
     winOverlay.style.alignItems = 'center';
@@ -44,31 +55,34 @@ function showWinScreen() {
 
     let winImage = new Image();
     winImage.src = 'img/9_intro_outro_screens/win/win_2.png';
-    winImage.style.width = '10%'; // Start klein
-    winImage.style.transition = 'transform 1s ease-in-out'; // Smooth Wachstum
+    winImage.style.width = '10%';
+    winImage.style.transition = 'width 1s ease-in-out, height 1s ease-in-out';
 
     winOverlay.appendChild(winImage);
     canvasContainer.appendChild(winOverlay);
 
     setTimeout(() => {
-        winImage.style.transform = 'scale(10)'; // Wächst auf volle Canvas-Größe
+        winImage.style.width = canvas.width + 'px';
+        winImage.style.height = canvas.height + 'px';
     }, 100);
 
-    stopGame(); // Spiel anhalten
-    changePlayButtonToRestart(); // Button ändern
+    changePlayButtonToRestart();
 }
 
-function showGameOverScreen() {
-    let canvas = document.getElementById('canvas');
-    let canvasContainer = document.getElementById('canvas-container');
 
+function showGameOverScreen() {
+    stopGame(); // Spiel & Sounds stoppen
+    stopAllSounds(); // Alle Sounds muten
+    gameOverSound.play(); // Game-Over-Sound abspielen
+
+    let canvasContainer = document.getElementById('canvas-container');
     let gameOverOverlay = document.createElement('div');
     gameOverOverlay.id = 'game-over-screen';
     gameOverOverlay.style.position = 'absolute';
-    gameOverOverlay.style.top = '0'; 
+    gameOverOverlay.style.top = '0';
     gameOverOverlay.style.left = '0';
-    gameOverOverlay.style.width = '100%'; 
-    gameOverOverlay.style.height = '97%'; 
+    gameOverOverlay.style.width = '100%';
+    gameOverOverlay.style.height = '96%';
     gameOverOverlay.style.display = 'flex';
     gameOverOverlay.style.justifyContent = 'center';
     gameOverOverlay.style.alignItems = 'center';
@@ -88,17 +102,47 @@ function showGameOverScreen() {
         gameOverImage.style.height = canvas.height + 'px';
     }, 100);
 
-    stopGame();
     changePlayButtonToRestart();
 }
+
 
 function stopGame() {
     if (world) {
         clearInterval(world.animationInterval); // Stoppe alle Animationen
         world.character.speed = 0; // Charakter bleibt stehen
-        world.keyboard = {}; // Deaktiviert Steuerung
+        world.keyboard = new Keyboard(); // Deaktiviert Steuerung
 
     }
+}
+
+function stopAllSounds() {
+    if (world && world.level.enimies) {
+        world.level.enimies.forEach(enemy => {
+            if (enemy instanceof ChickenBoss || enemy instanceof Chicken) {
+                if (enemy.CHICKEN_BOSS_SOUND) {
+                    enemy.CHICKEN_BOSS_SOUND.pause();
+                    enemy.CHICKEN_BOSS_SOUND.currentTime = 0;
+                }
+                if (enemy.chicken_sound) {
+                    enemy.chicken_sound.pause();
+                    enemy.chicken_sound.currentTime = 0;
+                }
+            }
+        });
+    }
+
+    // Falls der ChickenBoss-Sound noch läuft, stoppen
+    if (world && world.CHICKEN_BOSS_SOUND) {
+        world.CHICKEN_BOSS_SOUND.pause();
+        world.CHICKEN_BOSS_SOUND.currentTime = 0;
+    }
+
+    // Musik und andere Spiel-Sounds stoppen
+    let allSounds = document.querySelectorAll("audio");
+    allSounds.forEach(sound => {
+        sound.pause();
+        sound.currentTime = 0;
+    });
 }
 
 function changePlayButtonToRestart() {
@@ -117,8 +161,6 @@ function changePlayButtonToRestart() {
 function restartGame() {
     location.reload(); // Seite neu laden, um das Spiel zurückzusetzen
 }
-
-
 
 // Event-Listener für den Button
 document.addEventListener("DOMContentLoaded", function () {
@@ -178,3 +220,38 @@ window.addEventListener('keyup', (e) => { // function um bei drücken der taste 
     }
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    let leftBtn = document.getElementById("left-btn");
+    let rightBtn = document.getElementById("right-btn");
+    let jumpBtn = document.getElementById("jump-btn");
+    let throwBtn = document.getElementById("throw-btn");
+
+    function activateKey(key) {
+        if (world && world.keyboard) {
+            world.keyboard[key] = true;
+        }
+    }
+
+    function deactivateKey(key) {
+        if (world && world.keyboard) {
+            world.keyboard[key] = false;
+        }
+    }
+
+    // Verhindert, dass das Handy scrollt oder zoomen kann
+    function preventDefaultTouch(e) {
+        e.preventDefault();
+    }
+
+    leftBtn.addEventListener("touchstart", (e) => { preventDefaultTouch(e); activateKey("LEFT"); });
+    leftBtn.addEventListener("touchend", (e) => { preventDefaultTouch(e); deactivateKey("LEFT"); });
+
+    rightBtn.addEventListener("touchstart", (e) => { preventDefaultTouch(e); activateKey("RIGHT"); });
+    rightBtn.addEventListener("touchend", (e) => { preventDefaultTouch(e); deactivateKey("RIGHT"); });
+
+    jumpBtn.addEventListener("touchstart", (e) => { preventDefaultTouch(e); activateKey("SPACE"); });
+    jumpBtn.addEventListener("touchend", (e) => { preventDefaultTouch(e); deactivateKey("SPACE"); });
+
+    throwBtn.addEventListener("touchstart", (e) => { preventDefaultTouch(e); activateKey("D"); });
+    throwBtn.addEventListener("touchend", (e) => { preventDefaultTouch(e); deactivateKey("D"); });
+});

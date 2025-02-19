@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="touch.css">
+    <link rel="stylesheet" href="media.css">
     <link rel="icon" type="image/vnd.icon" href="img/11.background_body/viva-mexico-5438329_640.png">
     <title>EL POLLO LOCO</title>
+    <script src="startscreen.js"></script>
     <script src="models/drawable-object.class.js"></script>
     <script src="models/movable-object.class.js"></script>
     <script src="models/character.class.js"></script>
@@ -30,31 +33,50 @@
 
 <body onload="init()">
 
-    <h1>EL POLLO LOCO <img src="./img/11.background_body/bullet-holes-36943_640.png" width="120px" alt=""> </h1>
+    <h1>EL POLLO LOCO<img src="./img/11.background_body/bullet-holes-36943_640.png" width="120px" alt=""></h1>
 
     <div id="canvas-container" style="position: relative;">
         <canvas id="canvas" width="720" height="480"></canvas>
+
+        <div id="touch-controls">
+        
+            <div id="left-controls">
+                <button id="jump-btn" class="touch-btn jump-btn">
+                    <img src="./img/12.Keyboard-images/arrow_upward_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Jump">
+                </button>
+                <button id="throw-btn" class="touch-btn throw-btn">
+                    <img src="./img/6_salsa_bottle/salsa_bottle.png" alt="Throw">
+                </button>
+            </div>
+        
+            <div id="middle-controls">
+                <button id="" class="play-btn-middle">PLAY GAME</button>
+                <button id="" class="control-btn-middle">Steuerung</button>
+            </div>
+        
+            <div id="right-controls">
+                <button id="left-btn" class="touch-btn move-left-btn">
+                    <img src="./img/12.Keyboard-images/arrow_back_ios_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Left">
+                </button>
+                <button id="right-btn" class="touch-btn move-right-btn">
+                    <img src="./img/12.Keyboard-images/arrow_forward_ios_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Right">
+                </button>
+            </div>
+        </div>        
+        
     </div>
 
     </canvas>
 
     <div class="game-controls">
         <button class="play-btn">PLAY GAME</button>
-        <div class="controls">
+        <button id="toggle-controls" class="control-btn">STEUERUNG</button>
+
+        <div id="controls" class="controls hidden">
             <h2>STEUERUNG</h2>
-            <div class="control-item">
-                <img src="./img/12.Keyboard-images/left-arrow.png" class="key-icon">
-                <img src="./img/12.Keyboard-images/right-arrow.png" class="key-icon">
-                <span>- BEWEGEN</span>
-            </div>
-            <div class="control-item">
-                <img src="./img/12.Keyboard-images/space (3).png" class="key-icon">
-                <span>- SPRINGEN</span>
-            </div>
-            <div class="control-item">
-                <img src="./img/12.Keyboard-images/letter-d.png" class="key-icon">
-                <span>- FLASCHE WERFEN</span>
-            </div>
+            <p><img src="./img/12.Keyboard-images/left-arrow.png" class="key-icon"> <img src="./img/12.Keyboard-images/right-arrow.png" class="key-icon"> - BEWEGEN</p>
+            <p><img src="./img/12.Keyboard-images/space (3).png" class="key-icon"> - SPRINGEN</p>
+            <p><img src="./img/12.Keyboard-images/letter-d.png" class="key-icon"> - FLASCHE WERFEN</p>
         </div>
         
     </div>

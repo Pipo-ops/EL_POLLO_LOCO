@@ -9,6 +9,8 @@ class Coin extends MovableObject {
         'img/8_coin/coin_2.png',
     ]
 
+    COIN_SOUND = new Audio('audio/coin/400112__the-sacha-rush__natural-metal-coin-sound-4.wav');
+
     constructor(){ 
         super().loadImage(this.IMAGES_COIN[0]);
         this.loadImages(this.IMAGES_COIN);
@@ -16,6 +18,7 @@ class Coin extends MovableObject {
         this.x = 200 + Math.random() * 1600; // zufälliges erscheinen zwischen 200 und 700 bei jedem neuen Laden
         this.y = 130 + Math.random() * 60;
 
+        this.COIN_SOUND.volume = 0.5;
         this.animate();
 
     }
@@ -25,5 +28,10 @@ class Coin extends MovableObject {
         setInterval(() => {
             this.playAnimation(this.IMAGES_COIN);
         },150); // is die zeit der Animation
+    }
+
+    playCoinSound() {
+        this.COIN_SOUND.currentTime = 0; 
+        this.COIN_SOUND.play();
     }
 }

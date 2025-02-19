@@ -1,0 +1,87 @@
+@media only screen and (max-width: 760px) {
+    canvas {
+        width: 98%;
+    } 
+
+    .game-controls {
+        display: none;
+    }
+
+    .controls {
+        margin-top: 10px; 
+    }
+
+    #middle-controls {
+        bottom: 250px;
+    }
+
+    #play-btn-middle,
+    #control-btn-middle {
+        width: 220px;
+        height: 45px;
+        font-size: 16px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    #touch-controls {
+        bottom: 5px;
+        display: flex;
+    }
+
+    #left-controls {
+        left: 10px;
+        bottom: 30px;
+    }
+
+    #right-controls {
+        right: 35px;
+        bottom: 30px;
+    }
+
+    .touch-btn {
+        width: 50px;
+        height: 50px;
+    }
+
+    .touch-btn img {
+        width: 35px;
+    }
+
+    #middle-controls {
+        bottom: 90px;
+    }
+
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    } 
+
+    #middle-controls {
+        bottom: 90px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    #middle-controls {
+        bottom: 90px;
+    }
+    
+    .touch-btn {
+        width: 55px;
+        height: 55px;
+    }
+
+    .touch-btn img {
+        width: 30px;
+    }
+
+    #play-btn-middle,
+    #control-btn-middle {
+        width: 110px;
+        height: 40px;
+        font-size: 14px;
+    }
+}

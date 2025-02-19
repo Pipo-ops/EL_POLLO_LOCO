@@ -112,10 +112,13 @@ class World {
     }
     
     checkCollisionsCoin() {
-        for (this.i = this.level.coins.length - 1; this.i >= 0; this.i--) {
-            if (this.character.isColliding(this.level.coins[this.i])) {
-                this.level.coins.splice(this.i, 1); // Entferne Münze
-                this.statusBarCoin.setPercentage(this.calculateCoinPercentage()); // Aktualisiere StatusBar
+        for (let i = this.level.coins.length - 1; i >= 0; i--) {
+            let coin = this.level.coins[i];
+            
+            if (this.character.isColliding(coin)) {
+                coin.playCoinSound(); // Spiele den Sound ab
+                this.level.coins.splice(i, 1); // Entferne Münze
+                this.statusBarCoin.setPercentage(this.calculateCoinPercentage()); // StatusBar aktualisieren
             }
         }
     }

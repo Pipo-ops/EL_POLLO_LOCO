@@ -15,14 +15,16 @@ class Chicken extends MovableObject {
     ];
 
     chicken_sound = new Audio('audio/chicken/766255__edenfallen__anmlfarm-ext_chickensclucking_siyabonga_ngobese_owsfx.wav');
-
+    chicken_dead_sound = new Audio('audio/chicken/576604__sound_in_transition__klickender-schlag.wav');
+    
     constructor(){ // ist in jeder class zu finden 
         super().loadImage(this.IMAGES_WALKING[0])
         this.loadImages(this.IMAGES_WALKING);
 
-        this.x = 200 + Math.random() * 1900; // zufälliges erscheinen zwischen 200 und 700 bei jedem neuen Laden
+        this.x = 250 + Math.random() * 1900; // zufälliges erscheinen zwischen 200 und 700 bei jedem neuen Laden
         this.speed = 0.15 + Math.random() * 0.5; // hir wird die geschwindichkeit berechnet 
 
+        this.chicken_dead_sound.volume = 0.1;
         this.chicken_sound.volume = 0.005;
         this.animate();
     }
@@ -46,6 +48,7 @@ class Chicken extends MovableObject {
     }
 
     dead() {
+        this.chicken_dead_sound.play();
         this.loadImage(this.IMAGES_DEAD[0]); // Zeige das "tot"-Bild an
     
         setTimeout(() => {

@@ -30,7 +30,7 @@ class StatusbarChickenBoss extends DrawableObject {
 
     resolveImageIndex() {
         if (this.percentage > 60) {
-            return 5; 
+            return 4; 
         } else if (this.percentage > 0) {
             return 3; 
         } else {
