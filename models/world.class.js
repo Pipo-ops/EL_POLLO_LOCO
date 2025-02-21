@@ -142,12 +142,15 @@ class World {
     }
     
     checkThrowObjects() {
-        if (this.keyboard.D && this.collectedBottles > 0) { // Nur werfen, wenn Flaschen verfügbar sind
+        if (this.keyboard.D && this.canThrow && this.collectedBottles > 0) { 
             this.throwableObjects.push(new ThrowableObject(this.character.x + 100, this.character.y + 100));
             this.collectedBottles--; // Eine Flasche wird verbraucht
             this.statusBarBottle.setPercentage(this.calculateBottlePercentage()); // Statusbar aktualisieren
+            
+            this.canThrow = false; // Sperrt das Werfen, bis die Taste losgelassen wird
         }
     }
+       
 
     setPercentage(percentage) {
         this.percentage = Math.max(percentage, 0); // Stelle sicher, dass es nicht unter 0% fällt

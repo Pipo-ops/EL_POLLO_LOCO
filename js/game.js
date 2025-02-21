@@ -217,6 +217,7 @@ window.addEventListener('keyup', (e) => { // function um bei drücken der taste 
 
     if(e.keyCode == 68) {
         keyboard.D = false;
+        world.canThrow = true; 
     }
 });
 

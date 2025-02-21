@@ -32,13 +32,22 @@
 </head>
 
 <body onload="init()">
+    <div id="rotate-warning">
+        <img src="./img/12.Keyboard-images/rotate (1).png" alt="Rotate Your Device">
+        <p>Bitte drehe dein Geraet fuer ein besseres Spielerlebnis.</p>
+    </div>
+    
     <div class="headline-container">
         <h1>EL POLLO LOCO</h1>
         <img src="./img/11.background_body/bullet-holes-36943_640.png" width="120px" alt="">
     </div>
     <div id="canvas-container" style="position: relative;">
-        <canvas id="canvas" width="720" height="480"></canvas>
-
+        <div id="fullscreen">
+            <canvas id="canvas" width="720" height="480"></canvas>
+            <button id="fullscreen-btn" class="fullscreen-btn">
+                <img src="./img/12.Keyboard-images/fullscreen_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Fullscreen">
+            </button>            
+        </div>    
         <div id="top-controls">
             <button id="play-btn-top" class="touch-btn top-btn">
                 <img src="./img/12.Keyboard-images/play_arrow_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Play">

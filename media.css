@@ -85,11 +85,6 @@
         top: 190px;
     }
 
-    #touch-controls {
-        bottom: 15px;
-        display: flex;
-    }
-
     #top-controls {
         display: flex;
     }
@@ -156,4 +151,33 @@
         width: 170px;
     }
     
+}
+
+/* Touch-Buttons automatisch anzeigen auf Handys & Tablets */
+@media only screen and (max-width: 1025px) {
+    #touch-controls {
+        display: flex !important;
+    }
+
+    #top-controls {
+        display: flex !important;
+    }
+    
+}
+
+@media only screen and (max-height: 666px) {
+    .headline-container {
+        display: none;
+    }
+
+    .controls {
+        top: 90px;
+    }
+}
+
+/* Falls du im Querformat Touch-Buttons verstecken willst (optional) */
+@media only screen and (min-width: 1025px) and (orientation: landscape) {
+    #touch-controls {
+        display: none !important;
+    }
 }

@@ -56,7 +56,7 @@ class Chicken extends MovableObject {
             if (index > -1) {
                 level1.enimies.splice(index, 1); // Entferne das Huhn nach der Verzögerung
             }
-        }, 100); // Zeige das "tot"-Bild für 500ms an, bevor das Huhn verschwindet
+        }, 50); 
     }
 
 }    
