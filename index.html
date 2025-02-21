@@ -32,11 +32,21 @@
 </head>
 
 <body onload="init()">
-
-    <h1>EL POLLO LOCO<img src="./img/11.background_body/bullet-holes-36943_640.png" width="120px" alt=""></h1>
-
+    <div class="headline-container">
+        <h1>EL POLLO LOCO</h1>
+        <img src="./img/11.background_body/bullet-holes-36943_640.png" width="120px" alt="">
+    </div>
     <div id="canvas-container" style="position: relative;">
         <canvas id="canvas" width="720" height="480"></canvas>
+
+        <div id="top-controls">
+            <button id="play-btn-top" class="touch-btn top-btn">
+                <img src="./img/12.Keyboard-images/play_arrow_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Play">
+            </button>
+            <button id="control-btn-top" class="touch-btn top-btn">
+                <img src="./img/12.Keyboard-images/menu_book_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Controls">
+            </button>
+        </div>
 
         <div id="touch-controls">
         
@@ -47,11 +57,6 @@
                 <button id="throw-btn" class="touch-btn throw-btn">
                     <img src="./img/6_salsa_bottle/salsa_bottle.png" alt="Throw">
                 </button>
-            </div>
-        
-            <div id="middle-controls">
-                <button id="" class="play-btn-middle">PLAY GAME</button>
-                <button id="" class="control-btn-middle">Steuerung</button>
             </div>
         
             <div id="right-controls">

@@ -1,39 +1,61 @@
-// Steuerungs menü //
 document.addEventListener("DOMContentLoaded", function () {
-    let controlButton = document.getElementById("toggle-controls");
     let controlsDiv = document.getElementById("controls");
+    let controlsOpen = false;
 
-    // Funktion zum Öffnen & Schließen
+    // Buttons mit diesen Klassen/IDs sollen die Steuerung umschalten
+    let controlButtons = document.querySelectorAll("#toggle-controls, #control-btn-top");
+    let playButtons = document.querySelectorAll(".play-btn, #play-btn-top");
+
+    // Steuerung öffnen/schließen
     function toggleControls() {
-        if (controlsDiv.classList.contains("hidden")) {
-            controlsDiv.classList.remove("hidden");
-            controlsDiv.style.display = "block";
-            controlsDiv.style.animation = "slideDown 0.5s ease-in-out forwards";
-        } else {
-            closeControls();
-        }
+        controlsOpen ? closeControls() : openControls();
     }
 
-    // Funktion zum Schließen der Steuerung
+    function openControls() {
+        controlsDiv.classList.remove("hidden");
+        controlsDiv.style.display = "block";
+        controlsDiv.style.animation = "slideDown 0.3s ease-in-out forwards";
+        controlsOpen = true;
+    }
+
     function closeControls() {
-        controlsDiv.style.animation = "slideUp 0.5s ease-in-out forwards";
+        controlsDiv.style.animation = "slideUp 0.3s ease-in-out forwards";
         setTimeout(() => {
             controlsDiv.classList.add("hidden");
             controlsDiv.style.display = "none";
-        }, 500);
+            controlsOpen = false;
+        }, 300);
     }
 
-    // Event-Listener für den Button
-    controlButton.addEventListener("click", function (event) {
-        event.stopPropagation(); // Verhindert, dass das Klick-Event auch auf `document` registriert wird
-        toggleControls();
+    // Event-Listener für Steuerungs-Buttons
+    controlButtons.forEach(button => {
+        button.addEventListener("click", (event) => {
+            event.stopPropagation();
+            toggleControls();
+        });
+
+        button.addEventListener("touchstart", (event) => {
+            event.stopPropagation();
+            toggleControls();
+        }, { passive: true });
     });
 
-    // Event-Listener für das gesamte Dokument (Schließen durch Klick außerhalb)
+    // Schließen durch Klick außerhalb
     document.addEventListener("click", function (event) {
-        if (!controlsDiv.contains(event.target) && !controlButton.contains(event.target)) {
-            closeControls(); // Schließe das Steuerungsfeld, wenn außerhalb geklickt wird
+        if (controlsOpen && !controlsDiv.contains(event.target) && !event.target.closest("#toggle-controls, #control-btn-top")) {
+            closeControls();
         }
     });
+
+    document.addEventListener("touchstart", function (event) {
+        if (controlsOpen && !controlsDiv.contains(event.target) && !event.target.closest("#toggle-controls, #control-btn-top")) {
+            closeControls();
+        }
+    }, { passive: true });
+
+    // Event-Listener für Play-Buttons (Spiel starten)
+    playButtons.forEach(button => {
+        button.addEventListener("click", startGame);
+        button.addEventListener("touchstart", startGame, { passive: true });
+    });
 });
-// Steuerungs menü //
