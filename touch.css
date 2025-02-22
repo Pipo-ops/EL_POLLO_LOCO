@@ -112,3 +112,38 @@
 .top-btn:active {
     background-color: rgba(255, 140, 0, 0.9);
 }
+
+.swap-btn {
+    position: absolute;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none; /* Standardmäßig versteckt */
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease-in-out;
+    z-index: 1000;
+    pointer-events: auto;
+}
+
+.swap-btn img {
+    width: 40px;
+    height: auto;
+    filter: invert(1); 
+}
+
+
+.swap-btn:hover {
+    background-color: #e05606;
+}
+
+.swap-btn:active {
+    background-color: #ff4500;
+}

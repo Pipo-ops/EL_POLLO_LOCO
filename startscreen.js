@@ -174,3 +174,46 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("resize", checkOrientation);
 });
 // Rotate-warning //
+
+document.addEventListener("DOMContentLoaded", function () {
+    let leftControls = document.getElementById("left-controls");
+    let rightControls = document.getElementById("right-controls");
+    let swapButton = document.getElementById("swap-controls-btn");
+    let swapIcon = document.getElementById("swap-icon");
+    let swapped = false; // Speichert den aktuellen Zustand
+
+    function isTouchDevice() {
+        return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    }
+
+    function swapControls() {
+        swapped = !swapped; // Zustand umkehren
+
+        if (swapped) {
+            // Steuerung nach rechts verschieben
+            leftControls.style.left = "auto";
+            leftControls.style.right = "35px";
+            rightControls.style.right = "auto";
+            rightControls.style.left = "20px";
+            swapIcon.src = "img/12.Keyboard-images/arrows (1).png"; // Bild für "zurück wechseln"
+        } else {
+            // Steuerung wieder nach links verschieben
+            leftControls.style.left = "10px";
+            leftControls.style.right = "auto";
+            rightControls.style.right = "35px";
+            rightControls.style.left = "auto";
+            swapIcon.src = "img/12.Keyboard-images/arrows (1).png"; // Bild für "erneut wechseln"
+        }
+    }
+
+    if (isTouchDevice()) {
+        swapButton.style.display = "flex"; // Button nur auf Touch-Geräten anzeigen
+
+        // Click- & Touch-Event-Handling
+        swapButton.addEventListener("click", swapControls);
+        swapButton.addEventListener("touchstart", function (event) {
+            event.preventDefault(); // Touch-Ereignis nicht weitergeben
+            swapControls();
+        });
+    }
+});

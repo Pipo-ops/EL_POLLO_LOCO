@@ -240,21 +240,47 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Verhindert, dass das Handy scrollt oder zoomt
     function preventDefaultTouch(e) {
-        e.preventDefault();
+        if (e.cancelable) e.preventDefault(); // Nur aufrufen, wenn nötig!
     }
 
-    // Event-Listener mit `passive: true`
-    leftBtn.addEventListener("touchstart", (e) => { preventDefaultTouch(e); activateKey("LEFT"); }, { passive: true });
-    leftBtn.addEventListener("touchend", (e) => { preventDefaultTouch(e); deactivateKey("LEFT"); }, { passive: true });
+    leftBtn.addEventListener("touchstart", (e) => {
+        preventDefaultTouch(e);
+        activateKey("LEFT");
+    });
 
-    rightBtn.addEventListener("touchstart", (e) => { preventDefaultTouch(e); activateKey("RIGHT"); }, { passive: true });
-    rightBtn.addEventListener("touchend", (e) => { preventDefaultTouch(e); deactivateKey("RIGHT"); }, { passive: true });
+    leftBtn.addEventListener("touchend", (e) => {
+        preventDefaultTouch(e);
+        deactivateKey("LEFT");
+    });
 
-    jumpBtn.addEventListener("touchstart", (e) => { preventDefaultTouch(e); activateKey("SPACE"); }, { passive: true });
-    jumpBtn.addEventListener("touchend", (e) => { preventDefaultTouch(e); deactivateKey("SPACE"); }, { passive: true });
+    rightBtn.addEventListener("touchstart", (e) => {
+        preventDefaultTouch(e);
+        activateKey("RIGHT");
+    });
 
-    throwBtn.addEventListener("touchstart", (e) => { preventDefaultTouch(e); activateKey("D"); }, { passive: true });
-    throwBtn.addEventListener("touchend", (e) => { preventDefaultTouch(e); deactivateKey("D"); }, { passive: true });
+    rightBtn.addEventListener("touchend", (e) => {
+        preventDefaultTouch(e);
+        deactivateKey("RIGHT");
+    });
+
+    jumpBtn.addEventListener("touchstart", (e) => {
+        preventDefaultTouch(e);
+        activateKey("SPACE");
+    });
+
+    jumpBtn.addEventListener("touchend", (e) => {
+        preventDefaultTouch(e);
+        deactivateKey("SPACE");
+    });
+
+    throwBtn.addEventListener("touchstart", (e) => {
+        preventDefaultTouch(e);
+        activateKey("D");
+    });
+
+    throwBtn.addEventListener("touchend", (e) => {
+        preventDefaultTouch(e);
+        deactivateKey("D");
+    });
 });
