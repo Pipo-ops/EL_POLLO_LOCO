@@ -28,16 +28,23 @@ function startGame() {
         gameStarted = true;
         keyboard = new Keyboard();
         world = new World(canvas, keyboard); // Welt mit Keyboard verbinden
-        
+        world.run();
+
+        // Swap-Button verstecken, wenn das Spiel startet
+        let swapButton = document.getElementById("swap-controls-btn");
+        if (swapButton) {
+            swapButton.style.display = "none";
+        }
+
         requestAnimationFrame(() => world.draw()); // Zeichne das Spiel erst jetzt
     }
 }
 
 
 function showWinScreen() {
-    stopGame(); // Spiel & Sounds stoppen
-    stopAllSounds(); // Alle Sounds muten
-    winSound.play(); // Win-Sound abspielen
+    stopGame();
+    stopAllSounds();
+    winSound.play();
 
     let canvasContainer = document.getElementById('canvas-container');
     let winOverlay = document.createElement('div');
@@ -46,34 +53,45 @@ function showWinScreen() {
     winOverlay.style.top = '0';
     winOverlay.style.left = '0';
     winOverlay.style.width = '100%';
-    winOverlay.style.height = '96%';
+    winOverlay.style.height = '100%';
     winOverlay.style.display = 'flex';
+    winOverlay.style.flexDirection = 'column';
     winOverlay.style.justifyContent = 'center';
     winOverlay.style.alignItems = 'center';
-    winOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    winOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
     winOverlay.style.zIndex = '10';
 
     let winImage = new Image();
     winImage.src = 'img/9_intro_outro_screens/win/win_2.png';
-    winImage.style.width = '10%';
-    winImage.style.transition = 'width 1s ease-in-out, height 1s ease-in-out';
+    winImage.style.width = '40%';
+
+    // 🚀 Restart-Button hinzufügen
+    let restartButton = document.createElement('button');
+    restartButton.innerText = "Restart Game";
+    restartButton.style.padding = "15px 30px";
+    restartButton.style.fontSize = "20px";
+    restartButton.style.marginTop = "20px";
+    restartButton.style.cursor = "pointer";
+    restartButton.style.border = "none";
+    restartButton.style.fontFamily = "la-Tequila";
+    restartButton.style.borderRadius = "10px";
+    restartButton.style.background = "#e05606";
+    restartButton.style.color = "#000";
+    restartButton.style.fontWeight = "bold";
+
+    restartButton.addEventListener("click", function() {
+        restartGame();
+    });
 
     winOverlay.appendChild(winImage);
+    winOverlay.appendChild(restartButton);
     canvasContainer.appendChild(winOverlay);
-
-    setTimeout(() => {
-        winImage.style.width = canvas.width + 'px';
-        winImage.style.height = canvas.height + 'px';
-    }, 100);
-
-    changePlayButtonToRestart();
 }
 
-
 function showGameOverScreen() {
-    stopGame(); // Spiel & Sounds stoppen
-    stopAllSounds(); // Alle Sounds muten
-    gameOverSound.play(); // Game-Over-Sound abspielen
+    stopGame();
+    stopAllSounds();
+    gameOverSound.play();
 
     let canvasContainer = document.getElementById('canvas-container');
     let gameOverOverlay = document.createElement('div');
@@ -82,29 +100,40 @@ function showGameOverScreen() {
     gameOverOverlay.style.top = '0';
     gameOverOverlay.style.left = '0';
     gameOverOverlay.style.width = '100%';
-    gameOverOverlay.style.height = '96%';
+    gameOverOverlay.style.height = '100%';
     gameOverOverlay.style.display = 'flex';
+    gameOverOverlay.style.flexDirection = 'column';
     gameOverOverlay.style.justifyContent = 'center';
     gameOverOverlay.style.alignItems = 'center';
-    gameOverOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    gameOverOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
     gameOverOverlay.style.zIndex = '10';
 
     let gameOverImage = new Image();
     gameOverImage.src = 'img/9_intro_outro_screens/game_over/game over!.png';
-    gameOverImage.style.width = '10%';
-    gameOverImage.style.transition = 'width 1s ease-in-out, height 1s ease-in-out';
+    gameOverImage.style.width = '70%';
+
+    // 🚀 Restart-Button hinzufügen
+    let restartButton = document.createElement('button');
+    restartButton.innerText = "Restart Game";
+    restartButton.style.padding = "15px 30px";
+    restartButton.style.fontSize = "20px";
+    restartButton.style.marginTop = "20px";
+    restartButton.style.cursor = "pointer";
+    restartButton.style.border = "none";
+    restartButton.style.fontFamily = "la-Tequila";
+    restartButton.style.borderRadius = "10px";
+    restartButton.style.background = "#e05606";
+    restartButton.style.color = "#fff";
+    restartButton.style.fontWeight = "bold";
+
+    restartButton.addEventListener("click", function() {
+        restartGame();
+    });
 
     gameOverOverlay.appendChild(gameOverImage);
+    gameOverOverlay.appendChild(restartButton);
     canvasContainer.appendChild(gameOverOverlay);
-
-    setTimeout(() => {
-        gameOverImage.style.width = canvas.width + 'px';
-        gameOverImage.style.height = canvas.height + 'px';
-    }, 100);
-
-    changePlayButtonToRestart();
 }
-
 
 function stopGame() {
     if (world) {
@@ -160,7 +189,16 @@ function changePlayButtonToRestart() {
 
 function restartGame() {
     location.reload(); // Seite neu laden, um das Spiel zurückzusetzen
+
+    // Warte kurz nach dem Neuladen und zeige dann den Swap-Button wieder
+    setTimeout(() => {
+        let swapButton = document.getElementById("swap-controls-btn");
+        if (swapButton) {
+            swapButton.style.display = "flex"; // Button zurückholen
+        }
+    }, 500); // Nach 500ms warten, damit das Neuladen zuerst passiert
 }
+
 
 // Event-Listener für den Button
 document.addEventListener("DOMContentLoaded", function () {

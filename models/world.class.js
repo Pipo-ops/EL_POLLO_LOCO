@@ -25,7 +25,6 @@ class World {
     constructor(canvas, keyboard){          // diese funktion is in jeder class diese enthält alerdings die this.ctx = canvas.getContext('2d'); die is für das canvas verantwordlich
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
-        this.canvas = canvas;
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();

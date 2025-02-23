@@ -115,6 +115,18 @@ document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("fullscreenchange", updateFullscreenState);
     document.addEventListener("webkitfullscreenchange", updateFullscreenState);
 
+    // Überprüft, ob Fullscreen aktiv ist
+    function isFullscreen() {
+        return document.fullscreenElement || document.webkitFullscreenElement;
+    }
+
+    // Event-Listener für die Enter-Taste (nur wenn Fullscreen aktiv & Breite >= 1026px)
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" && isFullscreen() && window.innerWidth >= 1026) {
+            startGame();
+        }
+    });
+
     function updateFullscreenState() {
         if (document.fullscreenElement || document.webkitFullscreenElement) {
             fullscreenBtn.innerHTML = '<img src="./img/12.Keyboard-images/fullscreen_exit_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Exit Fullscreen">';
@@ -175,6 +187,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 // Rotate-warning //
 
+// Swap Controls //
 document.addEventListener("DOMContentLoaded", function () {
     let leftControls = document.getElementById("left-controls");
     let rightControls = document.getElementById("right-controls");
@@ -217,3 +230,80 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+// Swap Controls //
+
+// Mute //
+document.addEventListener("DOMContentLoaded", function () {
+    let muteBtn = document.getElementById("mute-btn");
+    let muteIcon = document.getElementById("mute-icon");
+    let isMuted = false;
+
+    function toggleMute() {
+        isMuted = !isMuted;
+
+        // 1. Mute alle existierenden <audio>-Elemente
+        document.querySelectorAll("audio").forEach(sound => {
+            sound.muted = isMuted;
+        });
+
+        // 2. Falls das Spiel läuft, mute alle Sounds in der Welt
+        if (world) {
+            muteAllGameSounds(isMuted);
+        }
+
+        // 3. Icon wechseln
+        muteIcon.src = isMuted 
+            ? "./img/13.sound/volume_off_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" 
+            : "./img/13.sound/volume_up_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png";
+    }
+
+    function muteAllGameSounds(mute) {
+        if (!world) return;
+
+        // 1. Hintergrundmusik und allgemeine Sounds muten
+        if (winSound) winSound.muted = mute;
+        if (gameOverSound) gameOverSound.muted = mute;
+
+        // 2. Mute alle Sounds des Bosses und der Gegner
+        world.level.enimies.forEach(enemy => {
+            if (enemy.CHICKEN_BOSS_SOUND) enemy.CHICKEN_BOSS_SOUND.muted = mute;
+            if (enemy.chicken_sound) enemy.chicken_sound.muted = mute;
+            if (enemy.chicken_dead_sound) enemy.chicken_dead_sound.muted = mute; // CHICKEN-DEAD-SOUND muten
+        });
+
+        // 3. Falls der ChickenBoss-Sound läuft, mute ihn auch
+        if (world.CHICKEN_BOSS_SOUND) world.CHICKEN_BOSS_SOUND.muted = mute;
+
+        // 4. Mute Charakter-Sounds
+        if (world.character) {
+            if (world.character.walking_sound) world.character.walking_sound.muted = mute;
+        }
+
+        // 5. Falls geworfene Objekte (Flaschen) existieren, mute deren Sounds
+        if (world.throwableObjects) {
+            world.throwableObjects.forEach(object => {
+                if (object.BOTTLE_BREAK_SOUND) object.BOTTLE_BREAK_SOUND.muted = mute;
+            });
+        }
+
+        // 6. Mute alle Coin-Sounds
+        if (world.level.coins) {
+            world.level.coins.forEach(coin => {
+                if (coin.COIN_SOUND) coin.COIN_SOUND.muted = mute;
+            });
+        }
+    }
+
+    // 7. Überwachung neuer Sounds (falls neue Sounds hinzukommen, werden sie ebenfalls gemutet)
+    function watchForNewSounds() {
+        setInterval(() => {
+            if (isMuted) {
+                muteAllGameSounds(true);
+            }
+        }, 50); 
+    }
+
+    muteBtn.addEventListener("click", toggleMute);
+    watchForNewSounds(); // Startet die Überwachung für neue Sounds
+});
+// Mute //

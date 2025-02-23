@@ -1,7 +1,11 @@
 @media only screen and (max-width: 760px) {
     canvas {
-        width: 98%;
-    } 
+        width: 97%;
+    }
+    
+    .fullscreen-btn{
+        margin-right: 10px;
+    }
 
     .controls {
         margin-top: 10px; 
@@ -97,7 +101,7 @@
 
 @media only screen and (max-height: 480px) {
     canvas {
-        height: 100vh;
+        height: 90vh;
     } 
 
 }
@@ -162,7 +166,14 @@
     #top-controls {
         display: flex !important;
     }
+
+    .game-controls{
+        display: none;
+    }
     
+    .link-by{
+        display: none;
+    }
 }
 
 @media only screen and (max-height: 666px) {

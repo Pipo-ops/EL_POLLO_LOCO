@@ -184,11 +184,8 @@ h1 {
 }
 
 canvas {
-    background-color: black;
-    border: 7px solid;
-    border-radius: 20px;
+    background-color: black; 
     display: block;
-    box-shadow: 2px 2px 2px 1px;
     margin-bottom: 20px;
 }
 
