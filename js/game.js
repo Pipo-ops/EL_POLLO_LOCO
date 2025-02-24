@@ -40,7 +40,6 @@ function startGame() {
     }
 }
 
-
 function showWinScreen() {
     stopGame();
     stopAllSounds();
@@ -67,7 +66,7 @@ function showWinScreen() {
 
     // 🚀 Restart-Button hinzufügen
     let restartButton = document.createElement('button');
-    restartButton.innerText = "Restart Game";
+    restartButton.innerText = "Menue";
     restartButton.style.padding = "15px 30px";
     restartButton.style.fontSize = "20px";
     restartButton.style.marginTop = "20px";
@@ -114,7 +113,7 @@ function showGameOverScreen() {
 
     // 🚀 Restart-Button hinzufügen
     let restartButton = document.createElement('button');
-    restartButton.innerText = "Restart Game";
+    restartButton.innerText = "Menue";
     restartButton.style.padding = "15px 30px";
     restartButton.style.fontSize = "20px";
     restartButton.style.marginTop = "20px";
@@ -176,7 +175,7 @@ function stopAllSounds() {
 
 function changePlayButtonToRestart() {
     let playButton = document.querySelector('.play-btn');
-    playButton.innerText = "RESTART GAME"; // Ändert den Button-Text
+    playButton.innerText = "Menue"; // Ändert den Button-Text
     playButton.onclick = restartGame; // Funktion für Neustart setzen
 
     // Button kurz verstecken und wieder anzeigen, um Hover-Status zu resetten
@@ -186,25 +185,20 @@ function changePlayButtonToRestart() {
     }, 50); // 50ms Verzögerung für sanfte Aktualisierung
 }
 
-
 function restartGame() {
-    location.reload(); // Seite neu laden, um das Spiel zurückzusetzen
-
-    // Warte kurz nach dem Neuladen und zeige dann den Swap-Button wieder
-    setTimeout(() => {
-        let swapButton = document.getElementById("swap-controls-btn");
-        if (swapButton) {
-            swapButton.style.display = "flex"; // Button zurückholen
-        }
-    }, 500); // Nach 500ms warten, damit das Neuladen zuerst passiert
+    location.reload(); // Die Seite neu laden
 }
 
-
-// Event-Listener für den Button
-document.addEventListener("DOMContentLoaded", function () {
-    let playButton = document.querySelector('.play-btn');
-    playButton.addEventListener("click", startGame);
+// Event-Listener für Buttons, die das Spiel neu starten
+window.addEventListener("DOMContentLoaded", function () {
+    let restartButtons = document.querySelectorAll(".Menue, .restart-btn");
+    restartButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            location.reload(); // Bei Klick die Seite neu laden
+        });
+    });
 });
+
 
 window.addEventListener('keydown', (e) => { // function um bei drücken der taste auf true zu setzen
     if(e.keyCode == 39) {
