@@ -10,36 +10,47 @@ class MovableObject extends DrawableObject {
       setInterval(() => {
           if (this.isDead()) {
               // Langsames Fallen, wenn der Charakter tot ist
-              this.speedY += this.acceleration * 0.2; // Beschleunigung reduzieren
-              this.y += this.speedY; // Bewege den Charakter nach unten
+              this.speedY += this.acceleration * 0.5; // Sanftere Gravitation für den Fall
+              this.y += this.speedY;  // Charakter fällt nach unten
           } else {
-              // Normale Gravitation, wenn der Charakter noch lebt
+              // Normale Gravitation, wenn der Charakter lebt
               if (this.isAboveGround() || this.speedY > 0) {
-                  this.y -= this.speedY; // Bewege nach oben oder unten
-                  this.speedY -= this.acceleration; // Verlangsame die vertikale Geschwindigkeit durch Gravitation
-              } else {
-                  this.speedY = 0; // Stoppe die Bewegung, wenn der Boden erreicht ist
+                  this.y -= this.speedY; // Bewegung nach oben/unten
+                  this.speedY -= this.acceleration; // Gravitation wirkt
+              } 
+  
+              // **Charakter landet auf dem Boden, aber nur wenn er nicht tot ist**
+              if (!(this instanceof ThrowableObject) && this.y > 151 && !this.isDead()) {  
+                  this.y = 151; // Charakter bleibt stehen
+                  this.speedY = 0; // Gravitation stoppt
               }
           }
+  
+          // **Flaschen fallen bis y = 345 und bleiben dort**
+          if (this instanceof ThrowableObject && this.y > 345) {  
+              this.y = 345; // Flasche bleibt am Boden
+              this.speedY = 0; 
+          }
+  
       }, 1000 / 25); // 25 FPS
   }
 
    isAboveGround() {
-      if(this instanceof ThrowableObject) {
-         return true;
+      if (this instanceof ThrowableObject) {
+         return this.y < 345; // Flaschen dürfen nur bis zur y = 345 fallen
       } else {
-         return this.y <  151  ;     // Ist über dem Boden, wenn y kleiner als 160 ist
+         return this.y < 151; // Charakter stoppt bei y = 151
       }
    }
-
+   
    isColliding(mo) {
       return (
-          this.x + this.width -10> mo.x && // Reduzierte Breite für präzisere Kollision
-          this.y + this.height + 10 > mo.y && // Kollision wird weiter unten registriert
-          this.x + 20 < mo.x + mo.width && // Charakter darf nicht zu weit weg sein
-          this.y + 20 < mo.y + mo.height // Charakter darf nicht zu tief sein
+          this.x + this.width -40> mo.x && // Reduzierte Breite für präzisere Kollision
+          this.y + this.height -10> mo.y && // Kollision wird weiter unten registriert
+          this.x < mo.x + mo.width && // Charakter darf nicht zu weit weg sein
+          this.y < mo.y + mo.height +10 // Charakter darf nicht zu tief sein
       );
-  }
+   }
   
    hit() {
       if (this.isInvincible) {

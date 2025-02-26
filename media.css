@@ -16,6 +16,10 @@
         font-size: 14px;
         top: 200px;
     }
+
+    h1 {
+        font-size: 25px;
+    }
 }
 
 @media only screen and (max-width: 700px) {
@@ -42,7 +46,7 @@
     }
 
     #right-controls {
-        right: 35px;
+        right: 30px;
         bottom: 30px;
     }
 
@@ -174,6 +178,7 @@
     .link-by{
         display: none;
     }
+
 }
 
 @media only screen and (max-height: 666px) {

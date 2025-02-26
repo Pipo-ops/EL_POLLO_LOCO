@@ -27,7 +27,7 @@
 #right-controls {
     flex-direction: row;
     position: absolute;
-    right: 35px;
+    right: 60px;
     bottom: 20px;
 }
 

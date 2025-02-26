@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Steuerung wieder nach links verschieben
             leftControls.style.left = "10px";
             leftControls.style.right = "auto";
-            rightControls.style.right = "35px";
+            rightControls.style.right = "30px";
             rightControls.style.left = "auto";
             swapIcon.src = "img/12.Keyboard-images/arrows (1).png"; // Bild für "erneut wechseln"
         }

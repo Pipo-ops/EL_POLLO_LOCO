@@ -64,7 +64,7 @@ function showWinScreen() {
     winImage.src = 'img/9_intro_outro_screens/win/win_2.png';
     winImage.style.width = '40%';
 
-    // 🚀 Restart-Button hinzufügen
+    //Restart-Button 
     let restartButton = document.createElement('button');
     restartButton.innerText = "Menue";
     restartButton.style.padding = "15px 30px";
@@ -111,7 +111,7 @@ function showGameOverScreen() {
     gameOverImage.src = 'img/9_intro_outro_screens/game_over/game over!.png';
     gameOverImage.style.width = '70%';
 
-    // 🚀 Restart-Button hinzufügen
+    // Restart-Button
     let restartButton = document.createElement('button');
     restartButton.innerText = "Menue";
     restartButton.style.padding = "15px 30px";
@@ -175,8 +175,8 @@ function stopAllSounds() {
 
 function changePlayButtonToRestart() {
     let playButton = document.querySelector('.play-btn');
-    playButton.innerText = "Menue"; // Ändert den Button-Text
-    playButton.onclick = restartGame; // Funktion für Neustart setzen
+    playButton.innerText = "Menue"; 
+    playButton.onclick = restartGame;
 
     // Button kurz verstecken und wieder anzeigen, um Hover-Status zu resetten
     playButton.style.display = "none";
@@ -186,7 +186,7 @@ function changePlayButtonToRestart() {
 }
 
 function restartGame() {
-    location.reload(); // Die Seite neu laden
+    location.reload(); 
 }
 
 // Event-Listener für Buttons, die das Spiel neu starten
@@ -194,7 +194,7 @@ window.addEventListener("DOMContentLoaded", function () {
     let restartButtons = document.querySelectorAll(".Menue, .restart-btn");
     restartButtons.forEach(button => {
         button.addEventListener("click", function () {
-            location.reload(); // Bei Klick die Seite neu laden
+            location.reload();
         });
     });
 });

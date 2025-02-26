@@ -157,8 +157,8 @@ class ChickenBoss extends MovableObject {
                 this.img = this.imageCache[this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]]; // Bleibe beim letzten Bild
     
                 setTimeout(() => {
-                    showWinScreen(); // WIN-Overlay anzeigen
-                }, 500); // Warte 1 Sekunde nach der Death-Animation
+                    showWinScreen(); 
+                }, 500); 
             }
         }, 200); // 200ms für jedes Bild der Dead-Animation
     }

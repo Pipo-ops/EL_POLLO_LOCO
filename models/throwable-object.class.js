@@ -42,7 +42,7 @@ class ThrowableObject extends MovableObject {
             if (this.hasHitGround() || this.hasHitEnemy()) { 
                 clearInterval(moveInterval); // Stoppe die Bewegung
                 this.break(); 
-            }
+            }     
         }, 50);
     }
 
