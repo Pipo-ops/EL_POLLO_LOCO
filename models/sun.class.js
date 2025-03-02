@@ -5,7 +5,7 @@ class Sun extends MovableObject {
     width = 150;
     height = 150;
 
-    constructor(){ // ist in jeder class zu finden 
+    constructor(){ 
         super().loadImage('img/10.sun/sun-159392_640.png')
     }
 }

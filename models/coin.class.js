@@ -4,7 +4,7 @@ class Coin extends MovableObject {
     height = 80;
     width = 80;
 
-    IMAGES_COIN = [ // sind die bilder die hintereinander abgespielt werden 
+    IMAGES_COIN = [ 
         'img/8_coin/coin_1.png',
         'img/8_coin/coin_2.png',
     ]
@@ -15,7 +15,7 @@ class Coin extends MovableObject {
         super().loadImage(this.IMAGES_COIN[0]);
         this.loadImages(this.IMAGES_COIN);
 
-        this.x = 200 + Math.random() * 1600; // zufälliges erscheinen zwischen 200 und 700 bei jedem neuen Laden
+        this.x = 200 + Math.random() * 1600;
         this.y = 130 + Math.random() * 60;
 
         this.COIN_SOUND.volume = 0.5;
@@ -23,11 +23,11 @@ class Coin extends MovableObject {
 
     }
 
-    animate(){ // Diese function fürt die animation aus 
+    animate(){  
 
         setInterval(() => {
             this.playAnimation(this.IMAGES_COIN);
-        },150); // is die zeit der Animation
+        },150); 
     }
 
     playCoinSound() {

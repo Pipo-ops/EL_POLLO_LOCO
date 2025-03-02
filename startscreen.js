@@ -1,16 +1,23 @@
+/**
+ * Handles the visibility toggle of the control menu.
+ * Opens and closes the controls when a button is clicked.
+ */
 document.addEventListener("DOMContentLoaded", function () {
     let controlsDiv = document.getElementById("controls");
     let controlsOpen = false;
-
-    // Buttons mit diesen Klassen/IDs sollen die Steuerung umschalten
     let controlButtons = document.querySelectorAll("#toggle-controls, #control-btn-top");
     let playButtons = document.querySelectorAll(".play-btn, #play-btn-top");
 
-    // Steuerung öffnen/schließen
+    /**
+     * Toggles the control menu visibility.
+     */
     function toggleControls() {
         controlsOpen ? closeControls() : openControls();
     }
 
+    /**
+     * Opens the control menu with an animation.
+     */
     function openControls() {
         controlsDiv.classList.remove("hidden");
         controlsDiv.style.display = "block";
@@ -18,6 +25,9 @@ document.addEventListener("DOMContentLoaded", function () {
         controlsOpen = true;
     }
 
+    /**
+     * Closes the control menu with an animation.
+     */
     function closeControls() {
         controlsDiv.style.animation = "slideUp 0.3s ease-in-out forwards";
         setTimeout(() => {
@@ -27,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 300);
     }
 
-    // Event-Listener für Steuerungs-Buttons
+    // Add event listeners to control buttons
     controlButtons.forEach(button => {
         button.addEventListener("click", (event) => {
             event.stopPropagation();
@@ -40,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, { passive: true });
     });
 
-    // Schließen durch Klick außerhalb
+    // Close controls when clicking outside
     document.addEventListener("click", function (event) {
         if (controlsOpen && !controlsDiv.contains(event.target) && !event.target.closest("#toggle-controls, #control-btn-top")) {
             closeControls();
@@ -53,14 +63,16 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }, { passive: true });
 
-    // Event-Listener für Play-Buttons (Spiel starten)
+    // Start game when play button is clicked
     playButtons.forEach(button => {
         button.addEventListener("click", startGame);
         button.addEventListener("touchstart", startGame, { passive: true });
     });
 });
 
-// Fullsreen //
+/**
+ * Handles fullscreen mode for the game.
+ */
 document.addEventListener("DOMContentLoaded", function () {
     let fullscreenBtn = document.getElementById("fullscreen-btn");
     let canvasContainer = document.getElementById("canvas-container");
@@ -71,6 +83,9 @@ document.addEventListener("DOMContentLoaded", function () {
         toggleFullscreen();
     });
 
+    /**
+     * Toggles fullscreen mode on or off.
+     */
     function toggleFullscreen() {
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
             enterFullscreen(canvasContainer);
@@ -79,160 +94,168 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    /**
+     * Enters fullscreen mode for the given element.
+     * @param {HTMLElement} element - The element to display in fullscreen.
+     */
     function enterFullscreen(element) {
         if (element.requestFullscreen) {
             element.requestFullscreen();
-        } else if (element.webkitRequestFullscreen) { // Safari
+        } else if (element.webkitRequestFullscreen) {
             element.webkitRequestFullscreen();
-        } else if (element.msRequestFullscreen) { // IE11
+        } else if (element.msRequestFullscreen) {
             element.msRequestFullscreen();
         }
 
-        // Canvas & Top-Controls aktivieren
         setTimeout(() => {
             canvas.classList.add("fullscreen-mode");
-            topControls.style.display = "flex"; // Top-Controls sichtbar machen
+            topControls.style.display = "flex";
         }, 100);
     }
 
+    /**
+     * Exits fullscreen mode.
+     */
     function exitFullscreen() {
         if (document.exitFullscreen) {
             document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) { // Safari
+        } else if (document.webkitExitFullscreen) {
             document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) { // IE11
+        } else if (document.msExitFullscreen) {
             document.msExitFullscreen();
         }
 
-        // Canvas & Top-Controls zurücksetzen
         setTimeout(() => {
             canvas.classList.remove("fullscreen-mode");
-            topControls.style.display = "none"; // Top-Controls ausblenden, falls nötig
+            topControls.style.display = "none";
         }, 100);
     }
 
-    // Falls Fullscreen geändert wird, Button-Icon und Top-Controls aktualisieren
     document.addEventListener("fullscreenchange", updateFullscreenState);
     document.addEventListener("webkitfullscreenchange", updateFullscreenState);
 
-    // Überprüft, ob Fullscreen aktiv ist
+    /**
+     * Checks if fullscreen mode is active.
+     * @returns {boolean} True if fullscreen is active, false otherwise.
+     */
     function isFullscreen() {
         return document.fullscreenElement || document.webkitFullscreenElement;
     }
 
-    // Event-Listener für die Enter-Taste (nur wenn Fullscreen aktiv & Breite >= 1026px)
-    document.addEventListener("keydown", function (event) {
-        if (event.key === "Enter" && isFullscreen() && window.innerWidth >= 1026) {
-            startGame();
-        }
-    });
-
+    /**
+     * Updates UI elements based on fullscreen state.
+     */
     function updateFullscreenState() {
-        if (document.fullscreenElement || document.webkitFullscreenElement) {
+        if (isFullscreen()) {
             fullscreenBtn.innerHTML = '<img src="./img/12.Keyboard-images/fullscreen_exit_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Exit Fullscreen">';
             canvas.classList.add("fullscreen-mode");
-            topControls.style.display = "flex"; // Top-Controls immer anzeigen
+            topControls.style.display = "flex";
         } else {
             fullscreenBtn.innerHTML = '<img src="./img/12.Keyboard-images/fullscreen_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Fullscreen">';
             canvas.classList.remove("fullscreen-mode");
-            topControls.style.display = "none"; // Falls sie vorher nicht sichtbar waren
+            topControls.style.display = "none";
         }
     }
 });
-// Fullsreen //
 
-// Touch erkennung //
+/**
+ * Detects if a touch device is used and enables touch controls.
+ */
 document.addEventListener("DOMContentLoaded", function () {
     let touchControls = document.getElementById("touch-controls");
 
+    /**
+     * Checks if the user is on a touch device.
+     * @returns {boolean} True if a touch device is detected, false otherwise.
+     */
     function isTouchDevice() {
         return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     }
 
     if (isTouchDevice()) {
-        touchControls.style.display = "flex"; // Touch-Buttons aktivieren
+        touchControls.style.display = "flex";
     }
 });
-// Touch erkennung //
 
-// Rotate-warning //
+/**
+ * Displays a warning if the mobile device is in portrait mode.
+ */
 document.addEventListener("DOMContentLoaded", function () {
     let rotateWarning = document.getElementById("rotate-warning");
 
+    /**
+     * Checks if the device is a mobile device.
+     * @returns {boolean} True if a mobile device is detected, false otherwise.
+     */
     function isMobileDevice() {
-        return window.innerWidth <= 432; // Handys bis 432px als "mobile" definieren
+        return window.innerWidth <= 432;
     }
 
+    /**
+     * Checks if the device is in portrait mode.
+     * @returns {boolean} True if the device is in portrait mode, false otherwise.
+     */
     function isPortraitMode() {
-        return window.innerHeight > window.innerWidth; // Hochformat erkennen
+        return window.innerHeight > window.innerWidth;
     }
 
+    /**
+     * Updates the visibility of the rotate warning based on device orientation.
+     */
     function checkOrientation() {
         if (isMobileDevice()) {
-            if (isPortraitMode()) {
-                rotateWarning.style.display = "flex"; // Zeige "Dreh dein Handy"-Meldung
-            } else {
-                rotateWarning.style.display = "none"; // Verstecke Meldung im Querformat
-            }
+            rotateWarning.style.display = isPortraitMode() ? "flex" : "none";
         } else {
-            rotateWarning.style.display = "none"; // Keine Warnung auf größeren Geräten
+            rotateWarning.style.display = "none";
         }
     }
 
-    // Überprüfung beim Laden der Seite
     checkOrientation();
-
-    // Falls das Handy gedreht wird, erneut prüfen
     window.addEventListener("resize", checkOrientation);
 });
-// Rotate-warning //
 
-// Swap Controls //
+/**
+ * Handles swapping of touch controls.
+ */
 document.addEventListener("DOMContentLoaded", function () {
     let leftControls = document.getElementById("left-controls");
     let rightControls = document.getElementById("right-controls");
     let swapButton = document.getElementById("swap-controls-btn");
     let swapIcon = document.getElementById("swap-icon");
-    let swapped = false; // Speichert den aktuellen Zustand
+    let swapped = false;
 
     function isTouchDevice() {
         return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     }
 
     function swapControls() {
-        swapped = !swapped; // Zustand umkehren
-
+        swapped = !swapped;
         if (swapped) {
-            // Steuerung nach rechts verschieben
             leftControls.style.left = "auto";
             leftControls.style.right = "35px";
             rightControls.style.right = "auto";
             rightControls.style.left = "20px";
-            swapIcon.src = "img/12.Keyboard-images/arrows (1).png"; // Bild für "zurück wechseln"
         } else {
-            // Steuerung wieder nach links verschieben
             leftControls.style.left = "10px";
             leftControls.style.right = "auto";
             rightControls.style.right = "30px";
             rightControls.style.left = "auto";
-            swapIcon.src = "img/12.Keyboard-images/arrows (1).png"; // Bild für "erneut wechseln"
         }
     }
 
     if (isTouchDevice()) {
-        swapButton.style.display = "flex"; // Button nur auf Touch-Geräten anzeigen
-
-        // Click- & Touch-Event-Handling
+        swapButton.style.display = "flex";
         swapButton.addEventListener("click", swapControls);
         swapButton.addEventListener("touchstart", function (event) {
-            event.preventDefault(); // Touch-Ereignis nicht weitergeben
+            event.preventDefault();
             swapControls();
         });
     }
 });
-// Swap Controls //
 
-// Mute //
+/**
+ * Handles muting and unmuting game sounds.
+ */
 document.addEventListener("DOMContentLoaded", function () {
     let muteBtn = document.getElementById("mute-btn");
     let muteIcon = document.getElementById("mute-icon");
@@ -241,17 +264,14 @@ document.addEventListener("DOMContentLoaded", function () {
     function toggleMute() {
         isMuted = !isMuted;
 
-        // 1. Mute alle existierenden <audio>-Elemente
         document.querySelectorAll("audio").forEach(sound => {
             sound.muted = isMuted;
         });
 
-        // 2. Falls das Spiel läuft, mute alle Sounds in der Welt
         if (world) {
             muteAllGameSounds(isMuted);
         }
 
-        // 3. Icon wechseln
         muteIcon.src = isMuted 
             ? "./img/13.sound/volume_off_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" 
             : "./img/13.sound/volume_up_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png";
@@ -260,33 +280,28 @@ document.addEventListener("DOMContentLoaded", function () {
     function muteAllGameSounds(mute) {
         if (!world) return;
 
-        // 1. Hintergrundmusik und allgemeine Sounds muten
         if (winSound) winSound.muted = mute;
         if (gameOverSound) gameOverSound.muted = mute;
 
-        // 2. Mute alle Sounds des Bosses und der Gegner
+      
         world.level.enimies.forEach(enemy => {
             if (enemy.CHICKEN_BOSS_SOUND) enemy.CHICKEN_BOSS_SOUND.muted = mute;
             if (enemy.chicken_sound) enemy.chicken_sound.muted = mute;
-            if (enemy.chicken_dead_sound) enemy.chicken_dead_sound.muted = mute; // CHICKEN-DEAD-SOUND muten
+            if (enemy.chicken_dead_sound) enemy.chicken_dead_sound.muted = mute;
         });
 
-        // 3. Falls der ChickenBoss-Sound läuft, mute ihn auch
         if (world.CHICKEN_BOSS_SOUND) world.CHICKEN_BOSS_SOUND.muted = mute;
 
-        // 4. Mute Charakter-Sounds
         if (world.character) {
             if (world.character.walking_sound) world.character.walking_sound.muted = mute;
         }
 
-        // 5. Falls geworfene Objekte (Flaschen) existieren, mute deren Sounds
         if (world.throwableObjects) {
             world.throwableObjects.forEach(object => {
                 if (object.BOTTLE_BREAK_SOUND) object.BOTTLE_BREAK_SOUND.muted = mute;
             });
         }
 
-        // 6. Mute alle Coin-Sounds
         if (world.level.coins) {
             world.level.coins.forEach(coin => {
                 if (coin.COIN_SOUND) coin.COIN_SOUND.muted = mute;
@@ -294,7 +309,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // 7. Überwachung neuer Sounds (falls neue Sounds hinzukommen, werden sie ebenfalls gemutet)
     function watchForNewSounds() {
         setInterval(() => {
             if (isMuted) {
@@ -304,6 +318,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     muteBtn.addEventListener("click", toggleMute);
-    watchForNewSounds(); // Startet die Überwachung für neue Sounds
+    watchForNewSounds(); 
 });
-// Mute //
+

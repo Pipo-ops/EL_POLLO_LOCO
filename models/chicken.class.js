@@ -17,12 +17,12 @@ class Chicken extends MovableObject {
     chicken_sound = new Audio('audio/chicken/766255__edenfallen__anmlfarm-ext_chickensclucking_siyabonga_ngobese_owsfx.wav');
     chicken_dead_sound = new Audio('audio/chicken/576604__sound_in_transition__klickender-schlag.wav');
     
-    constructor(){ // ist in jeder class zu finden 
+    constructor(){ 
         super().loadImage(this.IMAGES_WALKING[0])
         this.loadImages(this.IMAGES_WALKING);
 
-        this.x = 250 + Math.random() * 1900; // zufälliges erscheinen zwischen 200 und 700 bei jedem neuen Laden
-        this.speed = 0.15 + Math.random() * 0.5; // hir wird die geschwindichkeit berechnet 
+        this.x = 250 + Math.random() * 1900;
+        this.speed = 0.15 + Math.random() * 0.5; 
 
         this.chicken_dead_sound.volume = 0.1;
         this.chicken_sound.volume = 0.005;
@@ -31,7 +31,7 @@ class Chicken extends MovableObject {
 
     animate() {
         setInterval(() => {
-            this.moveLeft(); // Bewegung nach links
+            this.moveLeft();
         }, 1000 / 60);
 
         setInterval(() => {
@@ -42,19 +42,19 @@ class Chicken extends MovableObject {
     
     
     hitByBottle() {
-        this.isDead = true;  // Markiere das chicken als tot
-        clearInterval(this.animationInterval);  // Stoppe andere Animationen
-        this.dead();  // Starte die Todesanimation  
+        this.isDead = true; 
+        clearInterval(this.animationInterval);  
+        this.dead();    
     }
 
     dead() {
         this.chicken_dead_sound.play();
-        this.loadImage(this.IMAGES_DEAD[0]); // Zeige das "tot"-Bild an
+        this.loadImage(this.IMAGES_DEAD[0]); 
     
         setTimeout(() => {
             const index = level1.enimies.indexOf(this);
             if (index > -1) {
-                level1.enimies.splice(index, 1); // Entferne das Huhn nach der Verzögerung
+                level1.enimies.splice(index, 1); 
             }
         }, 100); 
     }

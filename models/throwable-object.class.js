@@ -40,7 +40,7 @@ class ThrowableObject extends MovableObject {
             this.x += this.speedX;
 
             if (this.hasHitGround() || this.hasHitEnemy()) { 
-                clearInterval(moveInterval); // Stoppe die Bewegung
+                clearInterval(moveInterval);
                 this.break(); 
             }     
         }, 50);
@@ -48,7 +48,7 @@ class ThrowableObject extends MovableObject {
 
     animate() { 
         let rotationInterval = setInterval(() => {
-            if (!this.isBroken) { // Animation nur, wenn die Flasche noch nicht zerbrochen ist
+            if (!this.isBroken) { 
                 this.playAnimation(this.IMAGES_ROTATION);
             } else {
                 clearInterval(rotationInterval);
@@ -57,7 +57,7 @@ class ThrowableObject extends MovableObject {
     }
 
     hasHitGround() {
-        return this.y >= 345; // Falls die Flasche auf den Boden trifft
+        return this.y >= 345;
         
     }
 
@@ -65,11 +65,11 @@ class ThrowableObject extends MovableObject {
         return world.level.enimies.some(enemy => {
             if (this.isColliding(enemy)) {
                 if (enemy instanceof ChickenBoss) {
-                    enemy.hit(); // Boss nimmt Schaden
+                    enemy.hit(); 
                 } else {
-                    enemy.dead(); // Normales Chicken stirbt sofort
+                    enemy.dead();
                 }
-                return true; // Treffer erkannt
+                return true; 
             }
             return false;
         });

@@ -82,7 +82,7 @@ class ChickenBoss extends MovableObject {
     }
 
     isCharacterInSight() {
-        if (!world || !world.character) return false; // Stelle sicher, dass world und character existieren
+        if (!world || !world.character) return false; 
     
         let distance = Math.abs(world.character.x - this.x);
         return distance < 500;
@@ -112,7 +112,7 @@ class ChickenBoss extends MovableObject {
             world.character.hit();
             this.isAttacking = false;
             clearInterval(this.animationInterval);
-            this.startAttackMode(); // Wechsel in Attack-Mode nach erstem Treffer
+            this.startAttackMode();
         }
     }
 
@@ -121,8 +121,8 @@ class ChickenBoss extends MovableObject {
         clearInterval(this.animationInterval);
         this.animationInterval = setInterval(() => {
             if (!this.isDead) {
-                this.playAnimation(this.IMAGES_ATTACK); // Attack-Animation starten
-                this.moveTowardsCharacter(); // Weiterhin Charakter verfolgen
+                this.playAnimation(this.IMAGES_ATTACK); 
+                this.moveTowardsCharacter(); 
             }
         }, 150);
     }
@@ -135,7 +135,7 @@ class ChickenBoss extends MovableObject {
             if (this.health > 0) {
                 this.playAnimation(this.IMAGES_HURT);
                 setTimeout(() => {
-                    this.startAttackMode(); // Nach erstem Treffer wechselt er in den Attack-Modus
+                    this.startAttackMode();
                 }, 500);
             } else {
                 this.die();
@@ -145,22 +145,22 @@ class ChickenBoss extends MovableObject {
 
     die() {
         this.isDead = true;
-        clearInterval(this.animationInterval); // Stoppe die bisherige Animation
+        clearInterval(this.animationInterval); 
     
         let deathAnimationIndex = 0;
         let deathAnimationInterval = setInterval(() => {
             if (deathAnimationIndex < this.IMAGES_DEAD.length) {
-                this.img = this.imageCache[this.IMAGES_DEAD[deathAnimationIndex]]; // Setze das nächste Bild der Animation
+                this.img = this.imageCache[this.IMAGES_DEAD[deathAnimationIndex]]; 
                 deathAnimationIndex++;
             } else {
-                clearInterval(deathAnimationInterval); // Beende die Animation
-                this.img = this.imageCache[this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]]; // Bleibe beim letzten Bild
+                clearInterval(deathAnimationInterval);
+                this.img = this.imageCache[this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]]; 
     
                 setTimeout(() => {
                     showWinScreen(); 
                 }, 500); 
             }
-        }, 200); // 200ms für jedes Bild der Dead-Animation
+        }, 200); 
     }
     
      

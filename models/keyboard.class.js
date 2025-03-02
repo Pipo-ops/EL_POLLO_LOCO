@@ -7,8 +7,8 @@ class Keyboard {
     D = false;
 
     constructor() {
-        this.bindKeyPressEvents();  // Tastatursteuerung aktivieren
-        this.bindBtsPressEvents();  // Touch-Steuerung aktivieren
+        this.bindKeyPressEvents();
+        this.bindBtsPressEvents();  
     }
 
     bindKeyPressEvents() {
