@@ -1,58 +1,94 @@
+/**
+ * Represents a drawable object in the game.
+ */
 class DrawableObject {
-    x= 120; 
-   
-    height = 150;
-    width = 100;
-
     img;
     imageCache = {};
     currentImage = 0;
+    x = 120;
+    y = 280;
+    height = 150;
+    width = 100;
 
-
-    loadImage(path){
-        this.img = new Image(); 
+    /**
+     * Loads an image from the specified path.
+     * @param {string} path - The path to the image.
+     */
+    loadImage(path) {
+        this.img = new Image();
         this.img.src = path;
     }
 
-    draw(ctx){
+    /**
+     * Draws the object on the canvas.
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+     */
+    draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
     /**
-    * 
-    * @param {Array} arr - ['img/imge1.png', 'img/imge2.png', ......]
-    */
+     * Draws the object's frame for debugging purposes.
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+     */
+    drawFrame(ctx) {
+        if (this instanceof Character || this instanceof MiniChicken || this instanceof Chicken || this instanceof Endboss) {
+            ctx.beginPath();
+            ctx.lineWidth = '3';
+            ctx.strokeStyle = 'blue';
+            ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
+        };
+    }
+
+    /**
+     * Draws the object's frame with offset for debugging purposes.
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+     */
+    drawFrameOffset(ctx) {
+        if (this instanceof Character || this instanceof MiniChicken || this instanceof Chicken || this instanceof Endboss || this instanceof Coin || this instanceof Bottle) {
+            ctx.beginPath();
+            ctx.lineWidth = '3';
+            ctx.strokeStyle = 'red';
+            ctx.rect(
+                this.x + this.offset.left,
+                this.y + this.offset.top,
+                this.width - this.offset.left - this.offset.right,
+                this.height - this.offset.top - this.offset.bottom
+            );
+            ctx.stroke();
+        }
+    }
+
+    /**
+     * Loads multiple images from the specified array of paths.
+     * @param {Array<string>} arr - The array of image paths.
+     */
     loadImages(arr) {
         arr.forEach((path) => {
             let img = new Image();
             img.src = path;
             this.imageCache[path] = img;
-        });   
+        });
     }
 
-    drawFrame(ctx){
-
-        if(this instanceof Character) {
-           ctx.beginPath();
-           ctx.rect(this.x + 35, this.y +80, this.width - 60, this.height - 80) ;
-        } 
-        
-        if(this instanceof Chicken) {
-           ctx.beginPath();
-           ctx.rect(this.x -5, this.y , this.width + 10, this.height );
-        }  
-  
-        if (this instanceof Coin) {
-            ctx.beginPath();
-            ctx.rect(this.x + 28, this.y + 28, this.width - 56, this.height - 55); 
-        } 
-        
-        if (this instanceof ChickenBoss ) {
-            ctx.beginPath();
-            ctx.rect(this.x + 20, this.y + 85, this.width - 56, this.height - 100); 
-        } 
-
-     }
-
-
+    /**
+     * Resolves the image index based on the current percentage.
+     * @returns {number} - The index of the image to display.
+     */
+    resolveImageIndex() {
+        if (this.percentage >= 100) {
+            return 5;
+        } else if (this.percentage >= 80) {
+            return 4;
+        } else if (this.percentage >= 60) {
+            return 3;
+        } else if (this.percentage >= 40) {
+            return 2;
+        } else if (this.percentage >= 20) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }

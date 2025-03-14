@@ -1,37 +1,39 @@
 class Coin extends MovableObject {
-    y = 180;
+    y = 130;
+    height = 150;
+    width = 150;
 
-    height = 80;
-    width = 80;
+    offset = {
+        left: 50,
+        right: 50,
+        top: 50,
+        bottom: 50
+    };
 
-    IMAGES_COIN = [ 
+    IMAGES_COIN = [
         'img/8_coin/coin_1.png',
-        'img/8_coin/coin_2.png',
-    ]
+        'img/8_coin/coin_2.png'
+    ];
 
-    COIN_SOUND = new Audio('audio/coin/400112__the-sacha-rush__natural-metal-coin-sound-4.wav');
-
-    constructor(){ 
-        super().loadImage(this.IMAGES_COIN[0]);
+    /**
+     * Creates an instance of Coin.
+     * @param {number} x - The x-coordinate of the coin.
+     * @param {number} y - The y-coordinate of the coin.
+     */
+    constructor(x, y) {
+        super().loadImage('img/8_coin/coin_1.png');
         this.loadImages(this.IMAGES_COIN);
-
-        this.x = 200 + Math.random() * 1600;
-        this.y = 130 + Math.random() * 60;
-
-        this.COIN_SOUND.volume = 0.5;
+        this.x = x;
+        this.y = y;
         this.animate();
-
     }
 
-    animate(){  
-
+    /**
+     * Animates the coin by playing the coin animation.
+     */
+    animate() {
         setInterval(() => {
             this.playAnimation(this.IMAGES_COIN);
-        },150); 
-    }
-
-    playCoinSound() {
-        this.COIN_SOUND.currentTime = 0; 
-        this.COIN_SOUND.play();
+        }, 200);
     }
 }

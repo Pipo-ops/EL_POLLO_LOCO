@@ -1,106 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="touch.css">
-    <link rel="stylesheet" href="media.css">
+    <title>El Pollo Loco</title>
     <link rel="icon" type="image/vnd.icon" href="img/11.background_body/viva-mexico-5438329_640.png">
-    <title>EL POLLO LOCO</title>
-    <script src="startscreen.js"></script>
+    <link rel="stylesheet" href="style.css">
     <script src="models/drawable-object.class.js"></script>
     <script src="models/movable-object.class.js"></script>
     <script src="models/character.class.js"></script>
-    <script src="models/chicken.class.js"></script>
-    <script src="models/cloud.class.js"></script>
-    <script src="models/sun.class.js"></script>
-    <script src="models/status-bar-health.class.js"></script>
-    <script src="models/status-bar-bottle.class.js"></script>
-    <script src="models/status-bar-coin.class.js"></script>
-    <script src="models/status-bar-chicken-boss.class.js"></script>
-    <script src="models/world.class.js"></script>
-    <script src="models/backgrpund-object.class.js"></script>
-    <script src="models/keyboard.class.js"></script>
     <script src="models/coin.class.js"></script>
     <script src="models/salsa-bottle.class.js"></script>
+    <script src="models/chicken.class.js"></script>
+    <script src="models/mini-chicken.class.js"></script>
+    <script src="models/chickenBoss.class.js"></script>
+    <script src="models/cloud.class.js"></script>
+    <script src="models/status-bar-health.class.js"></script>
+    <script src="models/status-bar-coin.class.js"></script>
+    <script src="models/status-bar-bottle.class.js"></script>
+    <script src="models/status-bar-chicken-boss.class.js"></script>
+    <script src="models/keyboard.class.js"></script>
+    <script src="models/world.class.js"></script>
+    <script src="models/background-object.class.js"></script>
     <script src="models/level.class.js"></script>
     <script src="models/throwable-object.class.js"></script>
-    <script src="models/chickenBoss.class.js"></script>
+    <script src="models/sound.class.js"></script>
     <script src="levels/level1.js"></script>
     <script src="js/game.js"></script>
+    <script src="js/rotate-warning.js"></script> 
 </head>
 
-<body onload="init()">
-    <div id="rotate-warning">
+<body onload="showMenu()">
+
+    <div class="rotate-container" id="rotate-warning">
         <img src="./img/12.Keyboard-images/rotate (1).png" alt="Rotate Your Device">
-        <p>Bitte drehe dein Geraet fuer ein besseres Spielerlebnis.</p>
+        <p>Please turn your Device for a better Gameplay.</p>
     </div>
-    
-    <div class="headline-container">
-        <h1>EL POLLO LOCO</h1>
-        <img src="./img/11.background_body/bullet-holes-36943_640.png" width="120px" alt="">
-    </div>
-    <div id="canvas-container" style="position: relative;">
-        <div id="fullscreen">
+
+    <div id="fullScreen" class="game-container">
+
+        <div id="menu" class="menu-container">
+            <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="Background Image"
+                class="background-image">
+            <div class="menu-content">
+                <button class="btn" onclick="startGame()">Start Game</button>
+                <button class="btn" onclick="showInstructions()">Instructions</button>
+                <button class="btn" onclick="showImprint()">Impressum</button>
+            </div>
+        </div>
+
+        <div id="game" class="game-content" style="display: none;">
+
+            <div class="panel-above">
+                <div class="btn" onclick="toggleMute()"><img id="mute-icon" src="./img/13.sound/volume_off_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="unmute"></div>
+                <div class="toggle-button btn" onclick="toggleButtons()"><img id="buttonsIcon" src="./img/12.Keyboard-images/keyboard_alt_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="buttons on"></div>
+            </div>
+
             <canvas id="canvas" width="720" height="480"></canvas>
-            <button id="fullscreen-btn" class="fullscreen-btn">
-                <img src="./img/12.Keyboard-images/fullscreen_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Fullscreen">
-            </button>            
-        </div>    
-        <div id="top-controls">
-            <button id="play-btn-top" class="touch-btn top-btn">
-                <img src="./img/12.Keyboard-images/play_arrow_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Play">
-            </button>
-            <button id="mute-btn" class="touch-btn top-btn">
-                <img id="mute-icon" src="./img/13.sound/volume_up_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Mute">
-            </button>   
+            <div class="panel-below">
+                <div class="panel-below-left">
+                    <button id="btnLeft" class="btn"><img src="./img/12.Keyboard-images/arrow_back_ios_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" width="35px"alt=""></button>
+                    <button id="btnRight" class="btn"><img src="./img/12.Keyboard-images/arrow_forward_ios_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" width="35px" alt=""></button>
+                </div>
+                
+                <div class="panel-below-right">
+                    <button id="btnThrow" class="btn"><img src="./img/6_salsa_bottle/salsa_bottle.png" width="35px" alt=""></button>
+                    <button id="btnJump" class="btn"><img src="./img/12.Keyboard-images/arrow_upward_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" width="35px" alt=""></button>
+                </div>
+            </div>
         </div>
 
-        <div id="touch-controls">
-            <button id="swap-controls-btn" class="touch-btn swap-btn">
-                <img id="swap-icon" src="img/12.Keyboard-images/arrows (1).png" alt="Swap">
-            </button>
-            
-            <div id="left-controls">
-                <button id="jump-btn" class="touch-btn jump-btn">
-                    <img src="./img/12.Keyboard-images/arrow_upward_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Jump">
-                </button>
-                <button id="throw-btn" class="touch-btn throw-btn">
-                    <img src="./img/6_salsa_bottle/salsa_bottle.png" alt="Throw">
-                </button>
+        <div id="instructions" class="instructions-container" style="display: none;">
+            <h1>Instructions</h1>
+            <p>Use the following keys to control the character:</p>
+            <div>
+                <div class="instructions-pics"><img src="./img/12.Keyboard-images/left-arrow.png" alt="Left">Left Arrow to Move Left <img src="./img/12.Keyboard-images/arrow_back_ios_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Left"></div>
+                <div class="instructions-pics"><img src="./img/12.Keyboard-images/right-arrow.png" alt="Right">Right Arrow Move Right<img src="./img/12.Keyboard-images/arrow_forward_ios_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Left"></div>
+                <div class="instructions-pics"><img src="./img/12.Keyboard-images/right-arrow.png" alt="Up"><img src="./img/12.Keyboard-images/space (3).png" alt="Space"> Up Arrow or Space to Jump<img src="./img/12.Keyboard-images/arrow_upward_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Left"></div>
+                <div class="instructions-pics"><img src="./img/12.Keyboard-images/letter-d.png" alt="D">D to Throw Bottle<img src="./img/6_salsa_bottle/salsa_bottle.png" alt="Left"></div>
             </div>
-        
-            <div id="right-controls">
-                <button id="left-btn" class="touch-btn move-left-btn">
-                    <img src="./img/12.Keyboard-images/arrow_back_ios_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Left">
-                </button>
-                <button id="right-btn" class="touch-btn move-right-btn">
-                    <img src="./img/12.Keyboard-images/arrow_forward_ios_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="Right">
-                </button>
-            </div>
-        </div>        
-        
-    </div>
-
-    </canvas>
-
-    <div class="game-controls">
-        <button class="play-btn">PLAY GAME</button>
-        <button id="toggle-controls" class="control-btn">STEUERUNG</button>
-
-        <div id="controls" class="controls hidden">
-            <h2>STEUERUNG</h2>
-            <p><img src="./img/12.Keyboard-images/left-arrow.png" class="key-icon"> <img src="./img/12.Keyboard-images/right-arrow.png" class="key-icon"> - BEWEGEN</p>
-            <p><img src="./img/12.Keyboard-images/space (3).png" class="key-icon"> - SPRINGEN</p>
-            <p><img src="./img/12.Keyboard-images/letter-d.png" class="key-icon"> - FLASCHE WERFEN</p>
+            <button class="back-to-menu btn" onclick="showMenu()">X</button>
         </div>
-        
-    </div>
-    
-    <div class="link-by">
-        <a href="https://www.flaticon.com/free-icons/keyboard-key" title="keyboard key icons">Keyboard key icons created by littleicon - Flaticon</a>
-    </div>
 
+        <div id="imprint" class="imprint-container" style="display: none;">
+            <h1>Impressum</h1>
+            <b><p>Angaben gemäß § 5 TMG</p></b>
+            <p>Schuster Phillip</p>
+            <p>Pragerstraße</p>
+            <p>1210 Wien</p>
+            <p>Kontakt: schusterphillip63@gmail.com</p>
+            <b><p>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:</p></b>
+            <p>Schuster Phillip</p>
+            <button class="back-to-menu btn" onclick="showMenu()">X</button>
+        </div>
+
+        <div id="win-loose" class="win-loose-container" style="display: none;">
+            <img id="win-loose-image" src="img/9_intro_outro_screens/win/win_2.png" alt="Win or Loose Image"
+                class="win-loose-image">
+            <div class="win-loose-buttons">
+                <button class="btn" onclick="playAgain()">Play Again</button>
+                <button class="btn" onclick="backToMenu()">Back to Menu</button>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>

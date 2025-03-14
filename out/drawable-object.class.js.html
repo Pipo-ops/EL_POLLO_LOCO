@@ -26,63 +26,99 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>class DrawableObject {
-    x= 120; // x achse = rechts Links
-   
-    height = 150;
-    width = 100;
-
+            <pre class="prettyprint source linenums"><code>/**
+ * Represents a drawable object in the game.
+ */
+class DrawableObject {
     img;
     imageCache = {};
     currentImage = 0;
+    x = 120;
+    y = 280;
+    height = 150;
+    width = 100;
 
-
-    loadImage(path){
-        this.img = new Image(); // this.img = document.getElementById('image')  &lt;img id="image" src> 
+    /**
+     * Loads an image from the specified path.
+     * @param {string} path - The path to the image.
+     */
+    loadImage(path) {
+        this.img = new Image();
         this.img.src = path;
     }
 
-    draw(ctx){
+    /**
+     * Draws the object on the canvas.
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+     */
+    draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
     /**
-    * 
-    * @param {Array} arr - ['img/imge1.png', 'img/imge2.png', ......]
-    */
-    loadImages(arr) { // is für das durladen der bilder verantwordlich
+     * Draws the object's frame for debugging purposes.
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+     */
+    drawFrame(ctx) {
+        if (this instanceof Character || this instanceof MiniChicken || this instanceof Chicken || this instanceof Endboss) {
+            ctx.beginPath();
+            ctx.lineWidth = '3';
+            ctx.strokeStyle = 'blue';
+            ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
+        };
+    }
+
+    /**
+     * Draws the object's frame with offset for debugging purposes.
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+     */
+    drawFrameOffset(ctx) {
+        if (this instanceof Character || this instanceof MiniChicken || this instanceof Chicken || this instanceof Endboss || this instanceof Coin || this instanceof Bottle) {
+            ctx.beginPath();
+            ctx.lineWidth = '3';
+            ctx.strokeStyle = 'red';
+            ctx.rect(
+                this.x + this.offset.left,
+                this.y + this.offset.top,
+                this.width - this.offset.left - this.offset.right,
+                this.height - this.offset.top - this.offset.bottom
+            );
+            ctx.stroke();
+        }
+    }
+
+    /**
+     * Loads multiple images from the specified array of paths.
+     * @param {Array&lt;string>} arr - The array of image paths.
+     */
+    loadImages(arr) {
         arr.forEach((path) => {
             let img = new Image();
             img.src = path;
             this.imageCache[path] = img;
-        });   
+        });
     }
 
-    drawFrame(ctx){
-
-        if(this instanceof Character) {
-           ctx.beginPath();
-           ctx.rect(this.x + 35, this.y +80, this.width - 60, this.height - 80) ;
-        } 
-        
-        if(this instanceof Chicken) {
-           ctx.beginPath();
-           ctx.rect(this.x -5, this.y , this.width + 10, this.height );
-        }  
-  
-        if (this instanceof Coin) {
-            ctx.beginPath();
-            ctx.rect(this.x + 28, this.y + 28, this.width - 56, this.height - 55); // Passe diese Werte nach Bedarf an
-        } 
-        
-        if (this instanceof ChickenBoss ) {
-            ctx.beginPath();
-            ctx.rect(this.x + 20, this.y + 85, this.width - 56, this.height - 100); // Passe diese Werte nach Bedarf an
-        } 
-
-     }
-
-
+    /**
+     * Resolves the image index based on the current percentage.
+     * @returns {number} - The index of the image to display.
+     */
+    resolveImageIndex() {
+        if (this.percentage >= 100) {
+            return 5;
+        } else if (this.percentage >= 80) {
+            return 4;
+        } else if (this.percentage >= 60) {
+            return 3;
+        } else if (this.percentage >= 40) {
+            return 2;
+        } else if (this.percentage >= 20) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }</code></pre>
         </article>
     </section>
@@ -93,13 +129,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="MovableObject.html">MovableObject</a></li><li><a href="World.html">World</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bottle.html">Bottle</a></li><li><a href="BottleStatusBar.html">BottleStatusBar</a></li><li><a href="Character.html">Character</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="Coin.html">Coin</a></li><li><a href="CoinStatusBar.html">CoinStatusBar</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MiniChicken.html">MiniChicken</a></li><li><a href="SoundManager.html">SoundManager</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="StatusBarEndboss.html">StatusBarEndboss</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addEventListeners">addEventListeners</a></li><li><a href="global.html#addTouchListeners">addTouchListeners</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Mar 01 2025 17:50:50 GMT+0100 (Mitteleuropäische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Mar 11 2025 21:28:02 GMT+0100 (Mitteleuropäische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>

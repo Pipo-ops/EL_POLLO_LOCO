@@ -1,12 +1,23 @@
-class ChickenBoss extends MovableObject {
-    y = 85;
-    height = 350;
+/**
+ * Represents the Endboss character in the game.
+ * @extends MovableObject
+ */
+class Endboss extends MovableObject {
+    energy = 100;
+    height = 400;
     width = 250;
-    health = 3;
-    isDead = false;
-    isAttacking = false; // Neue Variable: Ist der Boss im Angriffsmodus?
+    speed = 1;
+    x = 2200;
+    y = 60;
 
-    IMAGES_ANGRY = [
+    offset = {
+        left: 30,
+        right: 30,
+        top: 80,
+        bottom: 40
+    };
+
+    IMAGES_ALERT = [
         'img/4_enemie_boss_chicken/2_alert/G5.png',
         'img/4_enemie_boss_chicken/2_alert/G6.png',
         'img/4_enemie_boss_chicken/2_alert/G7.png',
@@ -14,7 +25,7 @@ class ChickenBoss extends MovableObject {
         'img/4_enemie_boss_chicken/2_alert/G9.png',
         'img/4_enemie_boss_chicken/2_alert/G10.png',
         'img/4_enemie_boss_chicken/2_alert/G11.png',
-        'img/4_enemie_boss_chicken/2_alert/G12.png',
+        'img/4_enemie_boss_chicken/2_alert/G12.png'
     ];
 
     IMAGES_WALKING = [
@@ -22,18 +33,6 @@ class ChickenBoss extends MovableObject {
         'img/4_enemie_boss_chicken/1_walk/G2.png',
         'img/4_enemie_boss_chicken/1_walk/G3.png',
         'img/4_enemie_boss_chicken/1_walk/G4.png',
-    ];
-
-    IMAGES_HURT = [
-        'img/4_enemie_boss_chicken/4_hurt/G21.png',
-        'img/4_enemie_boss_chicken/4_hurt/G22.png',
-        'img/4_enemie_boss_chicken/4_hurt/G23.png',
-    ];
-
-    IMAGES_DEAD = [
-        'img/4_enemie_boss_chicken/5_dead/G24.png',
-        'img/4_enemie_boss_chicken/5_dead/G25.png',
-        'img/4_enemie_boss_chicken/5_dead/G26.png',
     ];
 
     IMAGES_ATTACK = [
@@ -44,124 +43,195 @@ class ChickenBoss extends MovableObject {
         'img/4_enemie_boss_chicken/3_attack/G17.png',
         'img/4_enemie_boss_chicken/3_attack/G18.png',
         'img/4_enemie_boss_chicken/3_attack/G19.png',
-        'img/4_enemie_boss_chicken/3_attack/G20.png'
+        'img/4_enemie_boss_chicken/3_attack/G20.png',
     ];
 
-    CHICKEN_BOSS_SOUND = new Audio('audio/chicken/754972__mastersoundboy2005__reverse-bird-clucking.wav');
+    IMAGES_HURT = [
+        'img/4_enemie_boss_chicken/4_hurt/G21.png',
+        'img/4_enemie_boss_chicken/4_hurt/G22.png',
+        'img/4_enemie_boss_chicken/4_hurt/G23.png'
+    ];
 
-    constructor() {
-        super();
-        this.loadImages(this.IMAGES_ANGRY);
+    IMAGES_DEAD = [
+        'img/4_enemie_boss_chicken/5_dead/G24.png',
+        'img/4_enemie_boss_chicken/5_dead/G25.png',
+        'img/4_enemie_boss_chicken/5_dead/G26.png'
+    ];
+
+    soundManager = new SoundManager();
+    statusBarEndboss = new StatusBarEndboss();
+    isAttacking = false;
+    isHurtAnimationPlaying = false; 
+
+    /**
+     * Creates an instance of Endboss.
+     * @param {number} x - The initial x-coordinate of the Endboss.
+     * @param {number} y - The initial y-coordinate of the Endboss.
+     */
+    constructor(x, y){
+        super().loadImage(this.IMAGES_ALERT[0]);
+        this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
         this.loadImages(this.IMAGES_ATTACK);
-
-        this.x = 2500;
-        this.img = new Image();
-        this.img.src = this.IMAGES_ANGRY[0];
-
-        this.CHICKEN_BOSS_SOUND.volume = 0.2;
-
-        this.img.onload = () => {
-            this.animate();
-        };
+        this.x = x;
+        this.y = y;
+        this.alertPlayedOff = false; 
+        this.statusBarEndboss.setPercentage(this.energy);
+        this.animate();
     }
 
+    /**
+     * Reduces the energy of the Endboss by the specified damage.
+     * @param {number} [damage=1] - The amount of damage to inflict.
+     */
+    hit(damage = 1) {
+        this.soundManager.play('bossHurt', 1000);
+        super.hit(damage);
+        this.statusBarEndboss.setPercentage(this.energy);
+        this.isHurtAnimationPlaying = true; 
+        setTimeout(() => {
+            this.isHurtAnimationPlaying = false; 
+        }, 500); 
+    }
+
+    /**
+     * Animates the Endboss by switching between different images.
+     */
     animate() {
         this.animationInterval = setInterval(() => {
-            if (!this.isDead) {
-                if (!this.isAttacking && this.isCharacterInSight()) {
-                    this.playAnimation(this.IMAGES_ANGRY);
-                    setTimeout(() => {
-                        this.startAttack();
-                    }, 2000);
-                }
-            }
-        }, 240);
-    }
-
-    isCharacterInSight() {
-        if (!world || !world.character) return false; 
-    
-        let distance = Math.abs(world.character.x - this.x);
-        return distance < 500;
-    }
-
-    startAttack() {
-        this.isAttacking = true;
-        clearInterval(this.animationInterval);
-        this.animationInterval = setInterval(() => {
-            if (!this.isDead) {
-                this.playAnimation(this.IMAGES_WALKING);
-                this.moveTowardsCharacter();
-                this.CHICKEN_BOSS_SOUND.play();
-            }
-        }, 150);
-    }
-
-    moveTowardsCharacter() {
-        let speed = 8; 
-        if (this.x > world.character.x) {
-            this.x -= speed;
-        } else {
-            this.x += speed;
-        }
-
-        if (this.isColliding(world.character)) {
-            world.character.hit();
-            this.isAttacking = false;
-            clearInterval(this.animationInterval);
-            this.startAttackMode();
-        }
-    }
-
-    startAttackMode() {
-        this.isAttacking = true;
-        clearInterval(this.animationInterval);
-        this.animationInterval = setInterval(() => {
-            if (!this.isDead) {
-                this.playAnimation(this.IMAGES_ATTACK); 
-                this.moveTowardsCharacter(); 
-            }
-        }, 150);
-    }
-
-    hit() {
-        if (!this.isDead) {
-            this.health--;
-            world.statusbarChickenBoss.setPercentage(this.health * 33.3);
-
-            if (this.health > 0) {
+            if (super.isDead()) {
+                this.playAnimation(this.IMAGES_DEAD);
+            } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
-                setTimeout(() => {
-                    this.startAttackMode();
-                }, 500);
+            } else if (!this.alertPlayedOff) {
+                this.playAnimation(this.IMAGES_ALERT);
+            } else if (this.isAttacking) {
+                this.playAnimation(this.IMAGES_ATTACK);
             } else {
-                this.die();
+                this.playAnimation(this.IMAGES_WALKING);
             }
+        }, 200);
+
+        this.movementInterval = setInterval(() => {
+            if (this.bossIsActivated && !this.isHurtAnimationPlaying && !this.isAttacking) { 
+                this.moveLeft();
+            }
+        }, 1000 / 60);
+
+        this.scheduleRandomAttack();
+    }
+
+    /**
+     * Schedules a random attack for the endboss.
+     */
+    scheduleRandomAttack() {
+        setInterval(() => {
+            if (!super.isDead() && this.bossIsActivated) {
+                this.performAttack();
+            }
+        }, 2000 + Math.random() * 3000); 
+    }
+
+    /**
+     * Performs an attack by moving quickly to the left and then quickly back to the right.
+     */
+    performAttack() {
+        this.isAttacking = true;
+        this.playAnimation(this.IMAGES_ATTACK); 
+        let originalSpeed = this.speed;
+        this.moveLeftQuickly(200, 10, () => {
+            this.moveRightQuickly(90, 10, () => {
+                this.restoreOriginalSpeed(originalSpeed);
+            });
+        });
+    }
+
+    /**
+     * Moves the endboss quickly to the left.
+     * @param {number} distance - The distance to move.
+     * @param {number} speed - The speed of the movement.
+     * @param {Function} callback - The callback function to call after the movement is complete.
+     */
+    moveLeftQuickly(distance, speed, callback) {
+        let attackInterval = setInterval(() => {
+            if (distance > 0) {
+                this.x -= speed;
+                distance -= speed;
+            } else {
+                clearInterval(attackInterval);
+                callback();
+            }
+        }, 1000 / 60);
+    }
+
+    /**
+     * Moves the endboss quickly to the right.
+     * @param {number} distance - The distance to move.
+     * @param {number} speed - The speed of the movement.
+     * @param {Function} callback - The callback function to call after the movement is complete.
+     */
+    moveRightQuickly(distance, speed, callback) {
+        let returnInterval = setInterval(() => {
+            if (distance > 0) {
+                this.x += speed;
+                distance -= speed;
+            } else {
+                clearInterval(returnInterval);
+                callback();
+            }
+        }, 1000 / 60);
+    }
+
+    /**
+     * Restores the original speed of the endboss.
+     * @param {number} originalSpeed - The original speed to restore.
+     */
+    restoreOriginalSpeed(originalSpeed) {
+        this.isAttacking = false;
+        this.speed = originalSpeed;
+    }
+
+    /**
+     * Activates the boss with an alert animation and sound.
+     */
+    activateBossWithAlert() {
+        if (!this.bossIsActivated) {
+            this.playAnimation(this.IMAGES_ALERT);
+            setTimeout(() => {
+                this.bossIsActivated = this.activateBoss();
+                this.alertPlayedOff = true;
+            }, 1000); 
         }
     }
 
-    die() {
-        this.isDead = true;
-        clearInterval(this.animationInterval); 
-    
-        let deathAnimationIndex = 0;
-        let deathAnimationInterval = setInterval(() => {
-            if (deathAnimationIndex < this.IMAGES_DEAD.length) {
-                this.img = this.imageCache[this.IMAGES_DEAD[deathAnimationIndex]]; 
-                deathAnimationIndex++;
+    /**
+     * Applies a knockback effect to the Endboss.
+     */
+    knockback() {
+        let distance = 200; 
+        let steps = 10; 
+        let stepSize = distance / steps; 
+        let step = 0;
+
+        let interval = setInterval(() => {
+            if (step < steps) {
+                this.x -= stepSize;
+                step++;
             } else {
-                clearInterval(deathAnimationInterval);
-                this.img = this.imageCache[this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]]; 
-    
-                setTimeout(() => {
-                    showWinScreen(); 
-                }, 500); 
+                clearInterval(interval);
             }
-        }, 200); 
+        }, 20); 
     }
-    
-     
+
+    /**
+     * Stops all animation and movement intervals.
+     */
+    stopAllIntervals() {
+        clearInterval(this.animationInterval);
+        clearInterval(this.movementInterval);
+        clearInterval(this.attackInterval); 
+        clearInterval(this.returnInterval); 
+    }
 }

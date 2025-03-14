@@ -94,72 +94,6 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="canvas"><span class="type-signature"></span>canvas<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    Global variables for game state and elements.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game.js.html">game.js</a>, <a href="game.js.html#line4">line 4</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -170,7 +104,7 @@
     
 
     
-    <h4 class="name" id="changePlayButtonToRestart"><span class="type-signature"></span>changePlayButtonToRestart<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="backToMenu"><span class="type-signature"></span>backToMenu<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -178,7 +112,7 @@
 
 
 <div class="description">
-    Changes the play button to a restart button.
+    Returns to the main menu.
 </div>
 
 
@@ -222,7 +156,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game.js.html">game.js</a>, <a href="game.js.html#line141">line 141</a>
+        <a href="game.js.html">game.js</a>, <a href="game.js.html#line132">line 132</a>
     </li></ul></dd>
     
 
@@ -258,7 +192,7 @@
     
 
     
-    <h4 class="name" id="createMenuButton"><span class="type-signature"></span>createMenuButton<span class="signature">(text, callback)</span><span class="type-signature"> &rarr; {HTMLButtonElement}</span></h4>
+    <h4 class="name" id="gameOver"><span class="type-signature"></span>gameOver<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -266,7 +200,7 @@
 
 
 <div class="description">
-    Creates a menu button.
+    Handles the game over condition.
 </div>
 
 
@@ -275,78 +209,6 @@
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>text</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The button text.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The function to execute when clicked.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -382,7 +244,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game.js.html">game.js</a>, <a href="game.js.html#line165">line 165</a>
+        <a href="game.js.html">game.js</a>, <a href="game.js.html#line117">line 117</a>
     </li></ul></dd>
     
 
@@ -407,28 +269,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    The created button.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">HTMLButtonElement</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -448,7 +288,7 @@
 
 
 <div class="description">
-    Initializes the game by setting up the canvas and displaying the start screen.
+    Initializes the game by setting up the canvas and world.
 </div>
 
 
@@ -492,7 +332,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game.js.html">game.js</a>, <a href="game.js.html#line15">line 15</a>
+        <a href="game.js.html">game.js</a>, <a href="game.js.html#line9">line 9</a>
     </li></ul></dd>
     
 
@@ -528,7 +368,7 @@
     
 
     
-    <h4 class="name" id="restartGame"><span class="type-signature"></span>restartGame<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="loadMuteSetting"><span class="type-signature"></span>loadMuteSetting<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -536,7 +376,7 @@
 
 
 <div class="description">
-    Reloads the page to restart the game.
+    Loads the mute setting from localStorage.
 </div>
 
 
@@ -580,7 +420,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game.js.html">game.js</a>, <a href="game.js.html#line155">line 155</a>
+        <a href="game.js.html">game.js</a>, <a href="game.js.html#line48">line 48</a>
     </li></ul></dd>
     
 
@@ -616,7 +456,7 @@
     
 
     
-    <h4 class="name" id="showGameOverScreen"><span class="type-signature"></span>showGameOverScreen<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="playAgain"><span class="type-signature"></span>playAgain<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -624,7 +464,7 @@
 
 
 <div class="description">
-    Displays the game over screen and stops the game.
+    Restarts the game.
 </div>
 
 
@@ -668,7 +508,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game.js.html">game.js</a>, <a href="game.js.html#line80">line 80</a>
+        <a href="game.js.html">game.js</a>, <a href="game.js.html#line124">line 124</a>
     </li></ul></dd>
     
 
@@ -704,7 +544,7 @@
     
 
     
-    <h4 class="name" id="showStartScreen"><span class="type-signature"></span>showStartScreen<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="saveMuteSetting"><span class="type-signature"></span>saveMuteSetting<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -712,7 +552,7 @@
 
 
 <div class="description">
-    Displays the start screen.
+    Saves the mute setting to localStorage.
 </div>
 
 
@@ -756,7 +596,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game.js.html">game.js</a>, <a href="game.js.html#line24">line 24</a>
+        <a href="game.js.html">game.js</a>, <a href="game.js.html#line66">line 66</a>
     </li></ul></dd>
     
 
@@ -792,7 +632,7 @@
     
 
     
-    <h4 class="name" id="showWinScreen"><span class="type-signature"></span>showWinScreen<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="showImprint"><span class="type-signature"></span>showImprint<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -800,7 +640,7 @@
 
 
 <div class="description">
-    Displays the win screen and stops the game.
+    Displays the imprint screen.
 </div>
 
 
@@ -844,7 +684,183 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game.js.html">game.js</a>, <a href="game.js.html#line56">line 56</a>
+        <a href="game.js.html">game.js</a>, <a href="game.js.html#line102">line 102</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="showInstructions"><span class="type-signature"></span>showInstructions<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Displays the instructions screen.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="game.js.html">game.js</a>, <a href="game.js.html#line94">line 94</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="showMenu"><span class="type-signature"></span>showMenu<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Displays the main menu.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="game.js.html">game.js</a>, <a href="game.js.html#line73">line 73</a>
     </li></ul></dd>
     
 
@@ -888,7 +904,7 @@
 
 
 <div class="description">
-    Starts the game if it hasn't been started already.
+    Starts the game by initializing the level and world.
 </div>
 
 
@@ -932,7 +948,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game.js.html">game.js</a>, <a href="game.js.html#line37">line 37</a>
+        <a href="game.js.html">game.js</a>, <a href="game.js.html#line84">line 84</a>
     </li></ul></dd>
     
 
@@ -968,7 +984,7 @@
     
 
     
-    <h4 class="name" id="stopAllSounds"><span class="type-signature"></span>stopAllSounds<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="toggleButtons"><span class="type-signature"></span>toggleButtons<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -976,7 +992,7 @@
 
 
 <div class="description">
-    Stops all game sounds.
+    Toggles the display of the panel-below.
 </div>
 
 
@@ -1020,7 +1036,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game.js.html">game.js</a>, <a href="game.js.html#line115">line 115</a>
+        <a href="game.js.html">game.js</a>, <a href="game.js.html#line36">line 36</a>
     </li></ul></dd>
     
 
@@ -1056,7 +1072,7 @@
     
 
     
-    <h4 class="name" id="stopGame"><span class="type-signature"></span>stopGame<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="toggleMute"><span class="type-signature"></span>toggleMute<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -1064,7 +1080,7 @@
 
 
 <div class="description">
-    Stops the game by clearing animations and preventing movement.
+    Toggles the mute status of the game.
 </div>
 
 
@@ -1108,7 +1124,95 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game.js.html">game.js</a>, <a href="game.js.html#line104">line 104</a>
+        <a href="game.js.html">game.js</a>, <a href="game.js.html#line20">line 20</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="win"><span class="type-signature"></span>win<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handles the win condition of the game.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="game.js.html">game.js</a>, <a href="game.js.html#line110">line 110</a>
     </li></ul></dd>
     
 
@@ -1154,13 +1258,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#canvas">canvas</a></li><li><a href="global.html#changePlayButtonToRestart">changePlayButtonToRestart</a></li><li><a href="global.html#createMenuButton">createMenuButton</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#restartGame">restartGame</a></li><li><a href="global.html#showGameOverScreen">showGameOverScreen</a></li><li><a href="global.html#showStartScreen">showStartScreen</a></li><li><a href="global.html#showWinScreen">showWinScreen</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#stopAllSounds">stopAllSounds</a></li><li><a href="global.html#stopGame">stopGame</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#backToMenu">backToMenu</a></li><li><a href="global.html#gameOver">gameOver</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#loadMuteSetting">loadMuteSetting</a></li><li><a href="global.html#playAgain">playAgain</a></li><li><a href="global.html#saveMuteSetting">saveMuteSetting</a></li><li><a href="global.html#showImprint">showImprint</a></li><li><a href="global.html#showInstructions">showInstructions</a></li><li><a href="global.html#showMenu">showMenu</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleButtons">toggleButtons</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#win">win</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Mar 01 2025 17:50:03 GMT+0100 (Mitteleuropäische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Mar 11 2025 21:28:47 GMT+0100 (Mitteleuropäische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -1,199 +1,60 @@
-@media only screen and (max-width: 760px) {
+@media only screen and (max-width: 1080px) {
     canvas {
-        width: 97%;
-    }
-    
-    .fullscreen-btn{
-        margin-right: 10px;
+        width: 100vw;
+        height: 100vh;
     }
 
-    .controls {
-        margin-top: 10px; 
+    .menu-container {
+        width: 100vw;
+        height: 100vh;
+        object-fit: fill;
+        aspect-ratio: auto 720 / 480;
     }
 
-    .controls {
-        padding: 10px;
-        font-size: 14px;
-        top: 200px;
+    .game-content {
+        width: 100vw;
+        height: 100vh;
+        aspect-ratio: auto 720 / 480;
     }
 
-    h1 {
-        font-size: 25px;
-    }
-}
-
-@media only screen and (max-width: 700px) {
-    .controls {
-        font-size: 12px;
-        top: 200px;
-        height: 230px;
-        width: 280px;
-    }
-}
-
-@media only screen and (max-width: 650px) {
-    .controls {
-        top: 250px;
+    .win-loose-container {
+        width: 100vw;
+        height: 100vh;
+        aspect-ratio: auto 720 / 480;
     }
 
-    #touch-controls {
-        bottom: 5px;
+    .instructions-container,
+    .imprint-container {
+        width: 100vw;
+        height: 100vh;
+        aspect-ratio: auto 720 / 480;
     }
 
-    #left-controls {
-        left: 10px;
-        bottom: 30px;
-    }
-
-    #right-controls {
-        right: 30px;
-        bottom: 30px;
-    }
-
-    .touch-btn {
-        width: 50px;
-        height: 50px;
-    }
-
-    .touch-btn img {
-        width: 35px;
-    }
-
-    .play-btn{
-        font-size: 18px;
-    }
-
-    .control-btn{
-        font-size: 18px;
-    }
-
-    .headline-container{
-        flex-direction: column;
-        text-align: center;
-        gap: 0;
-    }
-
-}
-
-@media only screen and (max-width: 580px) {
-    .controls {
-        font-size: 10px;
-        height: 210px;
-        width: 238px;
-    }
-
-    .controls h2 {
-        font-size: 16px;
-    }
-    
-}
-
-@media only screen and (max-width: 510px) {
-    .controls {
-        top: 190px;
-    }
-
-    #top-controls {
-        display: flex;
-    }
-    
-    .game-controls{
-        display: none;
-    }
-    
-}
-
-@media only screen and (max-height: 480px) {
-    canvas {
-        height: 90vh;
-    } 
-
-}
-
-@media only screen and (max-width: 432px) {
-    .controls {
-        top: 238px;
-    }
-    
-}
-
-@media only screen and (max-width: 400px) {
-    .touch-btn {
-        width: 55px;
-        height: 55px;
-    }
-
-    .touch-btn img {
-        width: 30px;
-    }
-
-    .play-btn{
-        font-size: 14px;
-    }
-
-    .control-btn{
-        font-size: 14px;
-    }
-
-}
-
-@media only screen and (max-width: 390px) {
-    .controls {
-        font-size: 8px;
-        height: 170px;
-        width: 180px;
-    }
-
-    .key-icon {
-        width: 30px; 
-        height: 30px;
-        transition: transform 0.2s ease-in-out;
-    }
-    
-}
-
-@media only screen and (max-width: 330px) {
-    .controls {
-        font-size: 8px;
-        height: 160px;
-        width: 170px;
-    }
-    
-}
-
-/* Touch-Buttons automatisch anzeigen auf Handys & Tablets */
-@media only screen and (max-width: 1025px) {
-    #touch-controls {
+    .panel-below {
         display: flex !important;
     }
 
-    #top-controls {
-        display: flex !important;
-    }
-
-    .game-controls{
-        display: none;
-    }
-    
-    .link-by{
+    .toggle-button {
         display: none;
     }
 
 }
 
-@media only screen and (max-height: 666px) {
-    .headline-container {
-        display: none;
-    }
-
-    .controls {
-        top: 90px;
+@media only screen and (max-width: 610px) {
+    .btn{
+       font-size: 8px; 
     }
 }
 
-/* Falls du im Querformat Touch-Buttons verstecken willst (optional) */
-@media only screen and (min-width: 1025px) and (orientation: landscape) {
-    #touch-controls {
-        display: none !important;
+@media only screen and (max-width: 405px) {
+    .btn{
+       font-size: 6px; 
     }
+}
+
+@media only screen and (max-width: 480px) {
+    canvas {
+        height: 100vh;
+    }
+
 }

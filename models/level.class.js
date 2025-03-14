@@ -1,18 +1,27 @@
+/**
+ * Represents a level in the game.
+ */
 class Level {
-    enimies;
+    enemies;
     clouds;
+    backgroundObjects;
     coins;
     bottles;
-    backgroundObjects;
-    level_end_x = 2250;
-    background_sound = new Audio('audio/backgound_musik/177304__lenguaverde__jarabe-tapatio-mariachi.mp3');
+    level_end_x = 2200;
 
-    constructor(enimies, clouds, backgroundObjects, coins, bottles){
-        this.enimies = enimies;
+    /**
+     * Creates an instance of Level.
+     * @param {Array} enemies - The enemies in the level.
+     * @param {Array} clouds - The clouds in the level.
+     * @param {Array} backgroundObjects - The background objects in the level.
+     * @param {Array} coins - The coins in the level.
+     * @param {Array} bottles - The bottles in the level.
+     */
+    constructor(enemies, clouds, backgroundObjects, coins, bottles) {
+        this.enemies = enemies;
         this.clouds = clouds;
         this.backgroundObjects = backgroundObjects;
         this.coins = coins;
         this.bottles = bottles;
     }
-
 }

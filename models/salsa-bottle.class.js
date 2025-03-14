@@ -1,22 +1,27 @@
 class Bottle extends MovableObject {
-    y = 180;
+    y = 370;
+    height = 70;
+    width = 70;
 
-    height = 80;
-    width = 80;
+    offset = {
+        left: 30,
+        right: 10,
+        top: 10,
+        bottom: 10
+    };
 
-    IMAGES_BOTTLE = [  
+    BOTTLE_GROUND = [
         'img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
-        'img/6_salsa_bottle/2_salsa_bottle_on_ground.png',
-    ]
+    ];
 
-    constructor(){ 
-        super();
-
-        this.loadImage(this.IMAGES_BOTTLE[Math.floor(Math.random() * this.IMAGES_BOTTLE.length)]);
-
-        this.x = 200 + Math.random() * 1600; 
-        this.y = 340 + Math.random();
-
+    /**
+     * Creates an instance of Bottle.
+     * @param {number} x - The x-coordinate of the bottle.
+     * @param {number} y - The y-coordinate of the bottle.
+     */
+    constructor(x, y) {
+        super().loadImage('img/6_salsa_bottle/1_salsa_bottle_on_ground.png');
+        this.x = x;
+        this.y = y;
     }
-
 }

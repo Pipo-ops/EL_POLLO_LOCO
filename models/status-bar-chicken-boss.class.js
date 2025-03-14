@@ -1,7 +1,9 @@
-class StatusbarChickenBoss extends DrawableObject {
-
-
-    IMAGES = [
+/**
+ * Represents the status bar for the end boss in the game.
+ * @extends DrawableObject
+ */
+class StatusBarEndboss extends DrawableObject {
+    STATUSBAR_ENDBOSS = [
         'img/7_statusbars/2_statusbar_endboss/blue/blue0.png',
         'img/7_statusbars/2_statusbar_endboss/blue/blue20.png',
         'img/7_statusbars/2_statusbar_endboss/blue/blue40.png',
@@ -12,30 +14,26 @@ class StatusbarChickenBoss extends DrawableObject {
 
     percentage = 100;
 
+    /**
+     * Creates an instance of StatusBarEndboss.
+     */
     constructor() {
         super();
-        this.loadImages(this.IMAGES);
-        this.x = 2500;
-        this.y = 0;
-        this.width = 220;
-        this.height = 65;
+        this.loadImages(this.STATUSBAR_ENDBOSS);
+        this.x = 480;
+        this.y = 7;
+        this.width = 200;
+        this.height = 60;
         this.setPercentage(100);
     }
 
+    /**
+     * Sets the percentage of the status bar.
+     * @param {number} percentage - The percentage to set.
+     */
     setPercentage(percentage) {
-        this.percentage = Math.max(0, percentage);
-        let path = this.IMAGES[this.resolveImageIndex()];
+        this.percentage = percentage;
+        let path = this.STATUSBAR_ENDBOSS[this.resolveImageIndex()];
         this.img = this.imageCache[path];
-    }    
-
-    resolveImageIndex() {
-        if (this.percentage > 60) {
-            return 4; 
-        } else if (this.percentage > 0) {
-            return 3; 
-        } else {
-            return 0; 
-        }
     }
-      
 }

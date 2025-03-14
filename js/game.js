@@ -1,240 +1,135 @@
-/**
- * Global variables for game state and elements.
- */
 let canvas;
-let ctx;
-let gameStarted = false;
 let world;
 let keyboard = new Keyboard();
-let winSound = new Audio('audio/backgound_musik/177304__lenguaverde__jarabe-tapatio-mariachi (1).mp3');
-let gameOverSound = new Audio('audio/backgound_musik/76376__deleted_user_877451__game_over.wav');
+let isMuted = false;
 
 /**
- * Initializes the game by setting up the canvas and displaying the start screen.
+ * Initializes the game by setting up the canvas and world.
  */
 function init() {
     canvas = document.getElementById('canvas');
-    ctx = canvas.getContext('2d');
-    showStartScreen(); // Zeige das Startbild zuerst
+    world = new World(canvas, keyboard);
+    addTouchListeners();
+    loadMuteSetting();
+    world.soundManager.playBackgroundMusic();
 }
 
 /**
- * Displays the start screen.
+ * Toggles the mute status of the game.
  */
-function showStartScreen() {
-    let startImage = new Image();
-    startImage.src = 'img/9_intro_outro_screens/start/startscreen_1.png';
-    
-    startImage.onload = function () {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(startImage, 0, 0, canvas.width, canvas.height);
-    };
+function toggleMute() {
+    isMuted = !isMuted;
+    const muteIcon = document.getElementById('mute-icon');
+    if (isMuted) {
+        muteIcon.src = './img/13.sound/volume_off_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png';
+        world.soundManager.muteAll();
+    } else {
+        muteIcon.src = './img/13.sound/volume_up_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png';
+        world.soundManager.unmuteAll();
+    }
+    saveMuteSetting();
 }
 
 /**
- * Starts the game if it hasn't been started already.
+ * Toggles the display of the panel-below.
+ */
+function toggleButtons() {
+    const panelBelow = document.querySelector('.panel-below');
+    if (panelBelow.style.display === 'none' || panelBelow.style.display === '') {
+        panelBelow.style.display = 'flex';
+    } else {
+        panelBelow.style.display = 'none';
+    }
+}
+
+/**
+ * Loads the mute setting from localStorage.
+ */
+function loadMuteSetting() {
+    const savedMuteSetting = localStorage.getItem('isMuted');
+    if (savedMuteSetting !== null) {
+        isMuted = JSON.parse(savedMuteSetting);
+        const muteIcon = document.getElementById('mute-icon');
+        if (isMuted) {
+            muteIcon.src = './img/13.sound/volume_off_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png';
+            world.soundManager.muteAll();
+        } else {
+            muteIcon.src = './img/13.sound/volume_up_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png';
+            world.soundManager.unmuteAll();
+        }
+    }
+}
+
+/**
+ * Saves the mute setting to localStorage.
+ */
+function saveMuteSetting() {
+    localStorage.setItem('isMuted', JSON.stringify(isMuted));
+}
+
+/**
+ * Displays the main menu.
+ */
+function showMenu() {
+    document.getElementById('menu').style.display = 'flex';
+    document.getElementById('game').style.display = 'none';
+    document.getElementById('instructions').style.display = 'none';
+    document.getElementById('imprint').style.display = 'none';
+    document.getElementById('win-loose').style.display = 'none';
+}
+
+/**
+ * Starts the game by initializing the level and world.
  */
 function startGame() {
-    if (!gameStarted) {
-        gameStarted = true;
-        keyboard = new Keyboard();
-        world = new World(canvas, keyboard); // Welt mit Keyboard verbinden
-        world.run();
-
-        let swapButton = document.getElementById("swap-controls-btn");
-        if (swapButton) {
-            swapButton.style.display = "none";
-        }
-
-        requestAnimationFrame(() => world.draw());
-    }
+    document.getElementById('menu').style.display = 'none';
+    document.getElementById('game').style.display = 'flex';
+    initLevel();
+    init();
 }
 
 /**
- * Displays the win screen and stops the game.
+ * Displays the instructions screen.
  */
-function showWinScreen() {
-    stopGame();
-    stopAllSounds();
-    winSound.play();
-
-    let canvasContainer = document.getElementById('canvas-container');
-    let winOverlay = document.createElement('div');
-    winOverlay.id = 'win-screen';
-    winOverlay.style = "position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.4); z-index: 10;";
-
-    let winImage = new Image();
-    winImage.src = 'img/9_intro_outro_screens/win/win_2.png';
-    winImage.style.width = '40%';
-
-    let restartButton = createMenuButton("Menue", restartGame);
-
-    winOverlay.appendChild(winImage);
-    winOverlay.appendChild(restartButton);
-    canvasContainer.appendChild(winOverlay);
+function showInstructions() {
+    document.getElementById('menu').style.display = 'none';
+    document.getElementById('instructions').style.display = 'flex';
 }
 
 /**
- * Displays the game over screen and stops the game.
+ * Displays the imprint screen.
  */
-function showGameOverScreen() {
-    stopGame();
-    stopAllSounds();
-    gameOverSound.play();
-
-    let canvasContainer = document.getElementById('canvas-container');
-    let gameOverOverlay = document.createElement('div');
-    gameOverOverlay.id = 'game-over-screen';
-    gameOverOverlay.style = "position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.4); z-index: 10;";
-
-    let gameOverImage = new Image();
-    gameOverImage.src = 'img/9_intro_outro_screens/game_over/game over!.png';
-    gameOverImage.style.width = '70%';
-
-    let restartButton = createMenuButton("Menue", restartGame);
-
-    gameOverOverlay.appendChild(gameOverImage);
-    gameOverOverlay.appendChild(restartButton);
-    canvasContainer.appendChild(gameOverOverlay);
+function showImprint() {
+    document.getElementById('menu').style.display = 'none';
+    document.getElementById('imprint').style.display = 'flex';
 }
 
 /**
- * Stops the game by clearing animations and preventing movement.
+ * Handles the win condition of the game.
  */
-function stopGame() {
-    if (world) {
-        clearInterval(world.animationInterval);
-        world.character.speed = 0;
-        world.keyboard = new Keyboard();
-    }
+function win() {
+    world.winGame();
 }
 
 /**
- * Stops all game sounds.
+ * Handles the game over condition.
  */
-function stopAllSounds() {
-    if (world && world.level.enimies) {
-        world.level.enimies.forEach(enemy => {
-            if (enemy instanceof ChickenBoss || enemy instanceof Chicken) {
-                if (enemy.CHICKEN_BOSS_SOUND) {
-                    enemy.CHICKEN_BOSS_SOUND.pause();
-                    enemy.CHICKEN_BOSS_SOUND.currentTime = 0;
-                }
-                if (enemy.chicken_sound) {
-                    enemy.chicken_sound.pause();
-                    enemy.chicken_sound.currentTime = 0;
-                }
-            }
-        });
-    }
-
-    let allSounds = document.querySelectorAll("audio");
-    allSounds.forEach(sound => {
-        sound.pause();
-        sound.currentTime = 0;
-    });
+function gameOver() {
+    world.endGame();
 }
 
 /**
- * Changes the play button to a restart button.
+ * Restarts the game.
  */
-function changePlayButtonToRestart() {
-    let playButton = document.querySelector('.play-btn');
-    playButton.innerText = "Menue";
-    playButton.onclick = restartGame;
-
-    playButton.style.display = "none";
-    setTimeout(() => {
-        playButton.style.display = "inline-block";
-    }, 50);
+function playAgain() {
+    document.getElementById('win-loose').style.display = 'none';
+    startGame();
 }
 
 /**
- * Reloads the page to restart the game.
+ * Returns to the main menu.
  */
-function restartGame() {
-    location.reload();
+function backToMenu() {
+    document.getElementById('win-loose').style.display = 'none';
+    showMenu();
 }
-
-/**
- * Creates a menu button.
- * @param {string} text - The button text.
- * @param {Function} callback - The function to execute when clicked.
- * @returns {HTMLButtonElement} The created button.
- */
-function createMenuButton(text, callback) {
-    let button = document.createElement('button');
-    button.innerText = text;
-    button.style = "padding: 15px 30px; font-size: 20px; margin-top: 20px; cursor: pointer; border: none; font-family: la-Tequila; border-radius: 10px; background: #e05606; color: #000; font-weight: bold;";
-    button.addEventListener("click", callback);
-    return button;
-}
-
-/**
- * Event listener for keyboard controls.
- */
-window.addEventListener('keydown', (e) => {
-    switch (e.keyCode) {
-        case 39: keyboard.RIGHT = true; break;
-        case 37: keyboard.LEFT = true; break;
-        case 38: keyboard.UP = true; break;
-        case 40: keyboard.DOWN = true; break;
-        case 32: keyboard.SPACE = true; break;
-        case 68: keyboard.D = true; break;
-    }
-});
-
-/**
- * Event listener for releasing keyboard controls.
- */
-window.addEventListener('keyup', (e) => {
-    switch (e.keyCode) {
-        case 39: keyboard.RIGHT = false; break;
-        case 37: keyboard.LEFT = false; break;
-        case 38: keyboard.UP = false; break;
-        case 40: keyboard.DOWN = false; break;
-        case 32: keyboard.SPACE = false; break;
-        case 68: 
-            keyboard.D = false;
-            world.canThrow = true;
-            break;
-    }
-});
-
-/**
- * Adds touch controls for mobile users.
- */
-document.addEventListener("DOMContentLoaded", function () {
-    let leftBtn = document.getElementById("left-btn");
-    let rightBtn = document.getElementById("right-btn");
-    let jumpBtn = document.getElementById("jump-btn");
-    let throwBtn = document.getElementById("throw-btn");
-
-    function activateKey(key) {
-        if (world && world.keyboard) {
-            world.keyboard[key] = true;
-        }
-    }
-
-    function deactivateKey(key) {
-        if (world && world.keyboard) {
-            world.keyboard[key] = false;
-        }
-    }
-
-    function preventDefaultTouch(e) {
-        if (e.cancelable) e.preventDefault();
-    }
-
-    leftBtn.addEventListener("touchstart", (e) => { preventDefaultTouch(e); activateKey("LEFT"); });
-    leftBtn.addEventListener("touchend", (e) => { preventDefaultTouch(e); deactivateKey("LEFT"); });
-
-    rightBtn.addEventListener("touchstart", (e) => { preventDefaultTouch(e); activateKey("RIGHT"); });
-    rightBtn.addEventListener("touchend", (e) => { preventDefaultTouch(e); deactivateKey("RIGHT"); });
-
-    jumpBtn.addEventListener("touchstart", (e) => { preventDefaultTouch(e); activateKey("SPACE"); });
-    jumpBtn.addEventListener("touchend", (e) => { preventDefaultTouch(e); deactivateKey("SPACE"); });
-
-    throwBtn.addEventListener("touchstart", (e) => { preventDefaultTouch(e); activateKey("D"); });
-    throwBtn.addEventListener("touchend", (e) => { preventDefaultTouch(e); deactivateKey("D"); });
-});
